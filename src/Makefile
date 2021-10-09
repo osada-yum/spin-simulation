@@ -1,5 +1,6 @@
-FC      = gfortran
-FCFLAGS = -O3 -cpp
+FC       = gfortran
+FCFLAGS  = -O3 -cpp
+FCFLAGS += -Wall -fbounds-check -fbacktrace -g -pg -ffpe-trap=invalid,zero,overflow -std=f2008
 
 TARGET = Ising2d_relaxation.out
 
