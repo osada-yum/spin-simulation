@@ -7,18 +7,15 @@ program Ising2d_fluctuation
   real(rkind), allocatable        :: magne(:), energy(:)
   integer, parameter              :: mcs = 1000, sample = 10
   integer                         :: i, j
-  integer                         :: ierr, my_rank, num_proc
 
   system = Ising2d(2.269_rkind, 2001, 2000)
 
   allocate( magne(mcs), energy(mcs), source = 0.0_rkind)
-  if(my_rank == 0) then
-     write(output_unit, '(a,i0)'      ) "# N = ", system%particles()
-     write(output_unit, '(a,f20.10)'  ) "# kbt =", system%kbt()
-     write(error_unit , '(3(a, i0))'  ) "nx", system%x(), " ny", system%y(), " MCS: ", mcs
-     write(error_unit , '(a, f30.18)' ) "温度: ", system%kbt()
-     write(error_unit , '(a, f30.18)' ) "method: METROPOLIS"
-  end if
+  write(output_unit, '(a,i0)'      ) "# N = ", system%particles()
+  write(output_unit, '(a,f20.10)'  ) "# kbt =", system%kbt()
+  write(error_unit , '(3(a, i0))'  ) "nx", system%x(), " ny", system%y(), " MCS: ", mcs
+  write(error_unit , '(a, f30.18)' ) "温度: ", system%kbt()
+  write(error_unit , '(a, f30.18)' ) "method: METROPOLIS"
 
   do j = 1, sample
      !! 初期配置.
