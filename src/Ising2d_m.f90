@@ -151,10 +151,10 @@ contains
   subroutine set_random_spin_ising(this)
     class(Ising2d), intent(inout) :: this
     integer                       :: i
-    real(rkind)                   :: rnd
+    real(rkind)                   :: rnd(this%particles_s)
+    call random_number(rnd)
     do i = 1, this%particles_s
-       call random_number(rnd)
-       if (rnd > 0.5_rkind) then
+       if (rnd(i) > 0.5_rkind) then
           this%spin_s(i) = 1
        else
           this%spin_s(i) = -1
@@ -180,29 +180,30 @@ contains
   subroutine update_Metropolis_one_mcs_ising(system)
     class(Ising2d), intent(inout) :: system
     integer(ikind)                :: energy_diff
-    real(rkind)                   :: rnd
+    real(rkind)                   :: rnd(system%begin_s:system%end_s)
     integer                       :: i, j
+    call random_number(rnd)
     do j = 0, 1
        do i = j+system%begin_s  , system%end_s, 2
-          energy_diff = energy_lattice(i, system%neighbors_indices_array_s(:), system%spin_s(:))
-          call random_number(rnd)
-          if ( rnd < system%ising_exp_s(energy_diff) ) then
+          energy_diff = energy_onespin(i, system%neighbors_indices_array_s(:), system%spin_s(:))
+          !! Metropolis法の遷移確率に従ってスピンを反転させる.
+          if ( rnd(i) < system%ising_exp_s(energy_diff) ) then
              system%spin_s(i) = - system%spin_s(i)
           end if
        end do
        call system%norishiro()
     end do
   end subroutine update_Metropolis_one_mcs_ising
-  !! energy_lattice: 局所的な格子のエネルギー
-  pure integer(ikind) function energy_lattice(index, neighbor_indices, spins)
+  !! energy_onespin: 局所的な格子のエネルギー
+  pure integer(ikind) function energy_onespin(index, neighbor_indices, spins)
     integer       , intent(in) :: index, neighbor_indices(:)
     integer(ikind), intent(in) :: spins(:)
-    energy_lattice = 2*J_interaction * spins(index) *&
+    energy_onespin = 2*J_interaction * spins(index) *&
          ( spins(index + neighbor_indices(1))&
          + spins(index + neighbor_indices(2))&
          + spins(index + neighbor_indices(3))&
          + spins(index + neighbor_indices(4)))
-  end function energy_lattice
+  end function energy_onespin
   !! calc_magne: 磁化の計算, sum()でOK.
   pure real(rkind) function calc_magne(system) result(magne)
     type(Ising2d), intent(in) :: system
