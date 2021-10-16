@@ -10,6 +10,17 @@ program Ising2d_fluctuation
 
   system = Ising2d(2.269_rkind, 2001, 2000)
 
+  block
+    integer              :: seedsize
+    integer, allocatable :: seed(:)
+    call random_seed(size=seedsize)
+    allocate(seed(seedsize))
+    do i = 1, seedsize
+       seed(i) = i
+    end do
+    call random_seed(put=seed)
+  end block
+
   allocate( magne(mcs), energy(mcs), source = 0.0_rkind)
   write(output_unit, '(a,i0)'      ) "# N = ", system%particles()
   write(output_unit, '(a,f20.10)'  ) "# kbt =", system%kbt()
