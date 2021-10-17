@@ -1,8 +1,10 @@
 # 未完成のテキスト.
 # 使い方
-  * cd src/
-  * make
-  * ./Ising2d_relaxation.out
+```console
+cd src/
+make
+./Ising2d_relaxation.out
+```
 # 2次元正方格子強磁性Ising模型
 	2次元正方格子の上にIsingスピンを置いたものであり, 格子間のIsingスピンは強磁性的な相互作用をする.
 	Isingスピンは+1と-1の2状態を持つ離散的なスピンである.
