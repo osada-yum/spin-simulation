@@ -1,4 +1,4 @@
-program Ising2d_fluctuation
+program Ising2d_relaxation
   use,intrinsic :: iso_fortran_env
   use ising2d_m
   implicit none
@@ -54,4 +54,4 @@ program Ising2d_fluctuation
 
 contains
 
-end program Ising2d_fluctuation
+end program Ising2d_relaxation
