@@ -1,26 +1,12 @@
-# 未完成のテキスト.
-# 使い方
+# Usage
 ```console
-cd src/
-make
+mkdir build && cd build
+cmake ..
+cmake --build .
 ./Ising2d_relaxation.out
+./Ising2d_equilibrium.out
 ```
-# 説明
-## 2次元正方格子強磁性Ising模型
-2次元正方格子の上にIsingスピンを置いたものであり, 格子間のIsingスピンは強磁性的な相互作用をする.
-Isingスピンは+1と-1の2状態を持つ離散的なスピンである.
-この模型はスピンが揃っている強磁性相とスピンがバラバラな常磁性相間で相転移する.
-この模型の性質を知るには分配関数が計算して微分してエネルギーやら磁化やらを出せば良いが, スピン同士が相互作用しているためとても難しい.(この模型は厳密解があるが.)
-なので, シミュレーションをすることで物理量を計算する必要がある.
-## シミュレーションの方法
-### モンテカルロ積分
-モンテカルロ積分はそのままでは使えない.
-なぜなら, ランダムにスピン配位を決定すると, 強磁性的な状態よりも常磁性的な状態の方が多いため, 積分に寄与しない状態しかサンプリングできないからである.
-### マルコフチェインモンテカルロ
-#### importance sampling
-なので, 系の状態を更新することで, 平衡状態でボルツマン分布に従うようにすることを考える.
-この更新はMetroplis法などのアルゴリズムを使うことで可能となる.
-Metropolis法はMetropolisさんが開発したアルゴリズムで, シンプルで汎用性が高く, 色々な場所で使われている.
-また, 局所的なスピンフリップをするため並列化が容易である.
-#### Metropolis法
-このアルゴリズムはスピンフリップのエネルギー変化とボルツマン分布に依る確率で状態を更新する.
+# Implementation
+Modern Fortran implementation of Metropolis method for 2-dimensional ferromagnetic Ising model with skew boundary condition.
+## 2D-Ising
+You can initilize `Ising2d` by kbt (temperature), x and y (number of sites on the x,y-axis), update it by Metropolis method and calculate its magnetism and energy.
