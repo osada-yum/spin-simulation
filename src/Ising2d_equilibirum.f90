@@ -2,7 +2,6 @@ program Ising2d_equilibrium
   use,intrinsic :: iso_fortran_env
   use ising2d_m
   implicit none
-  integer, parameter              :: rkind = real64
   type(Ising2d)                   :: system
   real(rkind), allocatable        :: temperature(:)
   real(rkind), parameter          :: temperature_begin = 1.7, temperature_end = 2.4

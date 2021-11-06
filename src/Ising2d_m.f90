@@ -4,9 +4,8 @@
 ! skew boundary condition Square lattice Ising model.
 module Ising2d_m
   use, intrinsic :: iso_fortran_env
+  use utility_m
   implicit none
-
-  integer, parameter, private :: ikind = int32, rkind = real64
 
   integer, parameter, private :: num_neighbors = 4               ! 最近接格子数.
   integer, parameter, private :: J_interaction = 1.0

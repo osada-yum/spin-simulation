@@ -2,7 +2,6 @@ program Ising2d_relaxation
   use,intrinsic :: iso_fortran_env
   use ising2d_m
   implicit none
-  integer, parameter              :: rkind = real64
   type(Ising2d)                   :: system
   real(rkind), allocatable        :: magne(:), energy(:)
   integer, parameter              :: mcs = 1000, sample = 10
