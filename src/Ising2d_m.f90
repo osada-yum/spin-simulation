@@ -8,7 +8,7 @@ module Ising2d_m
   use random_base_m
   implicit none
 
-  integer, parameter, private :: num_neighbors = 4               ! 最近接格子数.
+  integer, parameter, private :: num_neighbors = 4                          ! 最近接格子数.
   integer, parameter, private :: J_interaction = 1.0
   integer, parameter, private :: array_discrete_energy_diff(-8:8) = &
        (/-8, -7, -6, -5, -4, -3, -2, -1, 0&
@@ -22,16 +22,16 @@ module Ising2d_m
      integer(ikind)              :: begin_s, end_s, all_s
      integer(ikind)              :: neighbors_indices_array_s(num_neighbors)
      integer(ikind), allocatable :: spin_s(:)
-     real(rkind)                 :: ising_exp_s(-8:8)                        ! 更新確率の配列(使うのは5パターン).
+     real(rkind)                 :: ising_exp_s(-8:8)                        ! 更新確率の配列(使うのは5パターン-4,-2,0,+2,+4).
    contains
      ! getter
      procedure,pass :: x                 => get_x
      procedure,pass :: y                 => get_y
-     procedure,pass :: offset            => get_offset ! のりしろ用のoffset.
-     procedure,pass :: particles         => get_particles ! 全体の格子数.
-     procedure,pass :: kbt               => get_kbt ! J/T.
-     procedure,pass :: beta              => get_beta ! 逆温度.
-     procedure,pass :: indices_neighbors => get_indices_neighbors ! 周りの格子点のindexの配列を返す.
+     procedure,pass :: offset            => get_offset                       ! のりしろ用のoffset.
+     procedure,pass :: particles         => get_particles                    ! 全体の格子数.
+     procedure,pass :: kbt               => get_kbt                          ! J/T.
+     procedure,pass :: beta              => get_beta                         ! 逆温度.
+     procedure,pass :: indices_neighbors => get_indices_neighbors            ! 周りの格子点のindexの配列を返す.
      procedure,pass :: spin              => get_spin
      procedure,pass :: spin_row          => get_spin_row
      ! setter
@@ -237,10 +237,10 @@ contains
     integer                    :: i
     magne_tmp  = 0.0_rkind
     energy_tmp = 0.0_rkind
-       magne_tmp = magne_tmp + system%spin(i)
     do i = 1, system%particles()
+       magne_tmp  = magne_tmp + system%spin(i)
 
-       energy_tmp   = energy_tmp &
+       energy_tmp = energy_tmp &
             - J_interaction*system%spin(i) * &
             ( system%spin(i + system%neighbors_indices_array_s(1))&
             + system%spin(i + system%neighbors_indices_array_s(3)))
