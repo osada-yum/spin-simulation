@@ -13,7 +13,6 @@ add_library(${LIB_2D-Ising}
   )
 target_link_libraries(${LIB_2D-Ising}
   PUBLIC
-  OpenMP::OpenMP_Fortran
   ${LIB_RANDOM}
   )
 target_include_directories(${LIB_2D-Ising}
