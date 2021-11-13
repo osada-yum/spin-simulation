@@ -20,6 +20,10 @@ target_include_directories(${LIB_2D-Ising}
   PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}/../random
   )
+target_compile_options(${LIB_2D-Ising}
+  PRIVATE
+  -cpp
+  )
 
 foreach(emc IN ITEMS ${EXE_2D-Ising_EMC_BUILTIN} ${EXE_2D-Ising_EMC_XOR96})
   add_executable(${emc}
