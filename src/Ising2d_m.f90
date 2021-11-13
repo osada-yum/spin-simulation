@@ -5,6 +5,7 @@
 module Ising2d_m
   use, intrinsic :: iso_fortran_env
   use utility_m
+  use random_base_m
   implicit none
 
   integer, parameter, private :: num_neighbors = 4               ! 最近接格子数.
@@ -147,11 +148,12 @@ contains
     this%spin_s(:) = 1
   end subroutine set_order_spin_ising
   !! set_random_spin_ising: ランダムにスピンを配置する.
-  subroutine set_random_spin_ising(this)
-    class(Ising2d), intent(inout) :: this
-    integer                       :: i
-    real(rkind)                   :: rnd(this%particles_s)
-    call random_number(rnd)
+  subroutine set_random_spin_ising(this, rand_gen)
+    class(Ising2d)      , intent(inout) :: this
+    class(random_base_t), intent(inout) :: rand_gen
+    integer                             :: i
+    real(rkind)                         :: rnd(this%particles_s)
+    call rand_gen%random_arr(rnd)
     do i = 1, this%particles_s
        if (rnd(i) > 0.5_rkind) then
           this%spin_s(i) = 1
@@ -176,12 +178,13 @@ contains
   end subroutine norishiro_ising
   ! updater
   !! update_Metropolis_one_mcs_ising: 系をMetropolis法で 1MCS だけ更新する.
-  subroutine update_Metropolis_one_mcs_ising(system)
-    class(Ising2d), intent(inout) :: system
-    integer(ikind)                :: energy_diff
-    real(rkind)                   :: rnd(system%begin_s:system%end_s)
-    integer                       :: i, j
-    call random_number(rnd)
+  subroutine update_Metropolis_one_mcs_ising(system, rand_gen)
+    class(Ising2d)      , intent(inout) :: system
+    class(random_base_t), intent(inout) :: rand_gen
+    integer(ikind)                      :: energy_diff
+    real(real64)                         :: rnd(system%begin_s:system%end_s)
+    integer                             :: i, j
+    call rand_gen%random_arr(rnd)
     do j = 0, 1
        do i = j+system%begin_s  , system%end_s, 2
           energy_diff = energy_onespin(i, system%neighbors_indices_array_s(:), system%spin_s(:))

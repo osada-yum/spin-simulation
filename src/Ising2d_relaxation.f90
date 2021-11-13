@@ -1,24 +1,22 @@
 program Ising2d_relaxation
-  use,intrinsic :: iso_fortran_env
+  use, intrinsic :: iso_fortran_env
+  use xorshift_m
+  use builtin_rand_m
   use ising2d_m
   implicit none
   type(Ising2d)                   :: system
+#ifdef BUILTIN
+  type(builtin_rand_wrapper)      :: gen
+#elif XOR96
+  type(xor96)                     :: gen
+#endif
   real(rkind), allocatable        :: magne(:), energy(:)
   integer, parameter              :: mcs = 1000, sample = 10
   integer                         :: i, j
 
   system = Ising2d(2.269_rkind, 2001, 2000)
 
-  block
-    integer              :: seedsize
-    integer, allocatable :: seed(:)
-    call random_seed(size=seedsize)
-    allocate(seed(seedsize))
-    do i = 1, seedsize
-       seed(i) = i
-    end do
-    call random_seed(put=seed)
-  end block
+  call gen%set_seed(42)
 
   allocate( magne(mcs), energy(mcs), source = 0.0_rkind)
   write(output_unit, '(a,i0)'      ) "# N = ", system%particles()
@@ -30,8 +28,9 @@ program Ising2d_relaxation
   do j = 1, sample
      !! 初期配置.
      call system%set_order_spin()
+     write(error_unit, *) "sample: ", j
      do i = 1, mcs
-        call system%update_with_Metropolis_one_mcs()
+        call system%update_with_Metropolis_one_mcs(gen)
         magne(i)  = magne(i)  + calc_magne(system)
         energy(i) = energy(i) + calc_energy(system)
      end do

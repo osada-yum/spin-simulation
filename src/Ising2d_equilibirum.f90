@@ -1,8 +1,15 @@
 program Ising2d_equilibrium
-  use,intrinsic :: iso_fortran_env
+  use, intrinsic :: iso_fortran_env
+  use xorshift_m
+  use builtin_rand_m
   use ising2d_m
   implicit none
   type(Ising2d)                   :: system
+#ifdef BUILTIN
+  type(builtin_rand_wrapper)      :: gen
+#elif XOR96
+  type(xor96)                     :: gen
+#endif
   real(rkind), allocatable        :: temperature(:)
   real(rkind), parameter          :: temperature_begin = 1.7, temperature_end = 2.4
   integer    , parameter          :: num_temperature = 100
@@ -12,16 +19,7 @@ program Ising2d_equilibrium
 
   system = Ising2d(1.0_rkind, 201, 200)
 
-  block
-    integer              :: seedsize
-    integer, allocatable :: seed(:)
-    call random_seed(size=seedsize)
-    allocate(seed(seedsize))
-    do i = 1, seedsize
-       seed(i) = i
-    end do
-    call random_seed(put=seed)
-  end block
+  call gen%set_seed(42)
 
   allocate( magne(num_temperature), energy(num_temperature), source = 0.0_rkind)
   allocate( temperature(num_temperature) )
@@ -36,16 +34,17 @@ program Ising2d_equilibrium
   write(error_unit , '(a, f30.18)') "method: METROPOLIS"
 
   !! 初期配置(ランダム).
-  call system%set_random_spin()
+  call system%set_random_spin(gen)
 
   do j = 1, num_temperature
      call system%set_kbt(temperature(j))
+     write(error_unit, '(a, f20.8)') "T: ", temperature(j)
      !! 空回し
      do i = 1, relx_mcs
-        call system%update_with_Metropolis_one_mcs()
+        call system%update_with_Metropolis_one_mcs(gen)
      end do
      do i = 1, sample_mcs
-        call system%update_with_Metropolis_one_mcs()
+        call system%update_with_Metropolis_one_mcs(gen)
         block
           real(rkind) :: magne_tmp, energy_tmp
           call calc_magne_and_energy(system, magne_tmp, energy_tmp)
