@@ -209,7 +209,7 @@ contains
   !! calc_magne: 磁化の計算, sum()でOK.
   pure real(rkind) function calc_magne(system) result(magne)
     type(Ising2d), intent(in) :: system
-    magne = real(sum(system%spin_s(system%begin_s:system%end_s)), rkind) / system%particles_s
+    magne = real(sum(system%spin_s(system%begin_s:system%end_s)), rkind) / system%particles()
   end function calc_magne
   !! calc_energy: エネルギーの計算, ループ回す.
   pure real(rkind) function calc_energy(system) result(energy)
@@ -218,12 +218,14 @@ contains
     integer                   :: i
     energy_tmp = 0.0_rkind
     do i = 1, system%particles_s
+    do i = 1, system%particles()
        energy_tmp   = energy_tmp &
             - J_interaction*system%spin(i) * &
             ( system%spin(i + system%neighbors_indices_array_s(1))&
             + system%spin(i + system%neighbors_indices_array_s(3)))
     end do
     energy = real(energy_tmp, rkind) / system%particles_s
+    energy = real(energy_tmp, rkind) / system%particles()
   end function calc_energy
   !! calc_magne_and_energy: 両方計算する, 1回のループで両方計算する.
   pure subroutine calc_magne_and_energy(system, magne, energy)
@@ -235,16 +237,16 @@ contains
     integer                    :: i
     magne_tmp  = 0.0_rkind
     energy_tmp = 0.0_rkind
-    do i = 1, system%particles_s
        magne_tmp = magne_tmp + system%spin(i)
+    do i = 1, system%particles()
 
        energy_tmp   = energy_tmp &
             - J_interaction*system%spin(i) * &
             ( system%spin(i + system%neighbors_indices_array_s(1))&
             + system%spin(i + system%neighbors_indices_array_s(3)))
     end do
-    magne  = real(magne_tmp, rkind)  / system%particles_s
-    energy = real(energy_tmp, rkind) / system%particles_s
+    magne  = real(magne_tmp, rkind)  / system%particles()
+    energy = real(energy_tmp, rkind) / system%particles()
     return
   end subroutine calc_magne_and_energy
 end module Ising2d_m
