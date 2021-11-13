@@ -1,4 +1,4 @@
-set(EXE_2D-Ising_EMC Ising2d_equilibirum.out) # Equilibrium Monte-Carlo
+set(EXE_2D-Ising_EMC Ising2d_equilibrium.out) # Equilibrium Monte-Carlo
 set(EXE_2D-Ising_NER Ising2d_relaxation.out)  # Non-Equilibrium relaxation
 set(LIB_2D-Ising     Ising2d)
 set(TEST_2D-Ising    Ising2d_test.out)
