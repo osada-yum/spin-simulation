@@ -45,16 +45,16 @@ program Ising2d_equilibrium
      end do
      do i = 1, sample_mcs
         call system%update_with_Metropolis_one_mcs(gen)
-        block
+        calc_order_parameters: block
           real(rkind) :: magne_tmp, energy_tmp
           call calc_magne_and_energy(system, magne_tmp, energy_tmp)
           magne(j)  = magne(j)  + magne_tmp
           energy(j) = energy(j) + energy_tmp
-        end block
+        end block calc_order_parameters
      end do
   end do
 
-  block
+  print_order_parameter: block
     real(rkind) :: magne_mean, energy_mean
     do i = 1, num_temperature
        magne_mean  = magne(i)  / sample_mcs
@@ -64,7 +64,7 @@ program Ising2d_equilibrium
             temperature(i), &
             magne_mean, energy_mean
     end do
-  end block
+  end block print_order_parameter
 
   deallocate( magne, energy )
 
