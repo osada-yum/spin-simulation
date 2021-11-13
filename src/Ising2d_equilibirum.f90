@@ -1,3 +1,7 @@
+#ifndef RAND_GEN_TYPE
+#define RAND_GEN_TYPE builtin_rand_wrapper
+#endif
+
 program Ising2d_equilibrium
   use, intrinsic :: iso_fortran_env
   use xorshift_m
@@ -5,11 +9,7 @@ program Ising2d_equilibrium
   use ising2d_m
   implicit none
   type(Ising2d)                   :: system
-#ifdef BUILTIN
-  type(builtin_rand_wrapper)      :: gen
-#elif XOR96
-  type(xor96)                     :: gen
-#endif
+  type(RAND_GEN_TYPE)             :: gen
   real(rkind), allocatable        :: temperature(:)
   real(rkind), parameter          :: temperature_begin = 1.7, temperature_end = 2.4
   integer    , parameter          :: num_temperature = 100
