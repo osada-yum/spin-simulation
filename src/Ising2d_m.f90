@@ -217,7 +217,6 @@ contains
     real(rkind)               :: energy_tmp
     integer                   :: i
     energy_tmp = 0.0_rkind
-    do i = 1, system%particles_s
     do i = 1, system%particles()
        energy_tmp   = energy_tmp &
             - J_interaction*system%spin(i) * &
