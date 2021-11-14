@@ -182,7 +182,7 @@ contains
     class(Ising2d)      , intent(inout) :: system
     class(random_base_t), intent(inout) :: rand_gen
     integer(ikind)                      :: energy_diff
-    real(real64)                         :: rnd(system%begin_s:system%end_s)
+    real(real64)                        :: rnd(system%begin_s:system%end_s)
     integer                             :: i, j
     call rand_gen%random_arr(rnd)
     do j = 0, 1
