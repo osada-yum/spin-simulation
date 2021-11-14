@@ -38,7 +38,7 @@ program Ising2d_equilibrium
 
   do j = 1, num_temperature
      call system%set_kbt(temperature(j))
-     write(error_unit, '(a, f20.8)') "T: ", temperature(j)
+     write(error_unit, '(a, f20.14)') "T: ", temperature(j)
      !! 空回し
      do i = 1, relx_mcs
         call system%update_with_Metropolis_one_mcs(gen)
