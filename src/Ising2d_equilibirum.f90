@@ -11,7 +11,7 @@ program Ising2d_equilibrium
   type(Ising2d)                   :: system
   type(RAND_GEN_TYPE)             :: gen
   real(rkind), allocatable        :: temperature(:)
-  real(rkind), parameter          :: temperature_begin = 1.7, temperature_end = 2.4
+  real(rkind), parameter          :: temperature_begin = 1.7_rkind, temperature_end = 2.4_rkind
   integer    , parameter          :: num_temperature = 100
   real(rkind), allocatable        :: magne(:), energy(:)
   integer, parameter              :: relx_mcs = 1000, sample_mcs = 1000
