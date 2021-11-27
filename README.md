@@ -1,10 +1,16 @@
 # Usage
 ```console
-mkdir build && cd build
+mkdir _build && cd _build
 cmake ..
 cmake --build .
 ./Ising2d_relaxation.out
 ./Ising2d_equilibrium.out
+```
+or
+```console
+fpm build --flag '-cpp'
+fpm run --flag '-cpp' Ising2d_equilibirum
+fpm run --flag '-cpp' Ising2d_relaxation
 ```
 # Implementation
 Modern Fortran implementation of Metropolis method for 2-dimensional ferromagnetic Ising model with skew boundary condition.
