@@ -19,20 +19,3 @@ target_link_libraries(${LIB_SPINS}
   ${LIB_RANDOM}
   ${LIB_MODEL}
   )
-# set_property(TARGET ${LIB_SPINS} PROPERTY
-#   IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/src/lib${LIB_UTIL}.a
-#   IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/src/random/lib${LIB_RANDOM}.a
-#   IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/src/model/lib${LIB_MODEL}.a
-#   )
-# target_link_libraries(${LIB_SPINS}
-#   PRIVATE
-#   ${LIB_UTIL}
-#   ${LIB_RANDOM}
-#   ${LIB_MODEL}
-#   )
-# target_include_directories(${LIB_SPINS}
-#   PRIVATE
-#   ${CMAKE_CURRENT_BINARY_DIR}/src
-#   ${CMAKE_CURRENT_BINARY_DIR}/src/random
-#   ${CMAKE_CURRENT_BINARY_DIR}/src/model
-#   )
