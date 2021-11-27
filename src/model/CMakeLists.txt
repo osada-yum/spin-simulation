@@ -26,6 +26,5 @@ add_library(${LIB_MODEL}
 target_link_libraries(${LIB_MODEL}
   INTERFACE
   ${LIB_2D-Ising}
-  ${LIB_2D-Ising2}
   )
 add_subdirectory(test)
