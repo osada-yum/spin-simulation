@@ -12,6 +12,10 @@ fpm build --flag '-cpp'
 fpm run --flag '-cpp' Ising2d_equilibirum
 fpm run --flag '-cpp' Ising2d_relaxation
 ```
+# TODO
+- [ ] compare speed of `f77 style`, `f90 with module style` and  `f90 with OOP`.
+- [ ] implement several spin models.
+- [ ] implement several algorithm.
 # Implementation
 Modern Fortran implementation of Metropolis method for 2-dimensional ferromagnetic Ising model with skew boundary condition.
 ## 2D-Ising
