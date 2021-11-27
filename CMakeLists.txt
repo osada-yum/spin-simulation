@@ -8,6 +8,7 @@ add_compile_options(-Wall -cpp -O -fbounds-check -fbacktrace -g -pg -ffpe-trap=i
 
 project(monte-carlo-simulation Fortran)
 
-set(LIB_RANDOM rand_gen) # random number genrator base class.
-add_subdirectory(random)
+set(LIB_SPINS spins) # utility functions.
+
 add_subdirectory(src)
+add_subdirectory(app)
