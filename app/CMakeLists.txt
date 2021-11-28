@@ -1,9 +1,18 @@
 # Equilibrium Monte-Carlo
+set(EXE_2D-Ising_EMC_BUILTIN_F77 Ising2d_equilibrium_builtin_rand_f77.out)
 set(EXE_2D-Ising_EMC_BUILTIN Ising2d_equilibrium_builtin_rand.out)
 set(EXE_2D-Ising_EMC_XOR96   Ising2d_equilibrium_xor96.out)
 # Non-Equilibrium relaxation
 set(EXE_2D-Ising_NER_BUILTIN Ising2d_relaxation_builtin_rand.out)
 set(EXE_2D-Ising_NER_XOR96   Ising2d_relaxation_xor96.out)
+
+add_executable(${EXE_2D-Ising_EMC_BUILTIN_F77}
+  Ising2d_equilibrium.f
+  )
+set_target_properties(${EXE_2D-Ising_EMC_BUILTIN_F77}
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
 
 foreach(emc IN ITEMS ${EXE_2D-Ising_EMC_BUILTIN} ${EXE_2D-Ising_EMC_XOR96})
   add_executable(${emc}
