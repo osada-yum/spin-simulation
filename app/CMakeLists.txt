@@ -7,7 +7,7 @@ set(EXE_2D-Ising_NER_XOR96   Ising2d_relaxation_xor96.out)
 
 foreach(emc IN ITEMS ${EXE_2D-Ising_EMC_BUILTIN} ${EXE_2D-Ising_EMC_XOR96})
   add_executable(${emc}
-    Ising2d_equilibirum.f90
+    Ising2d_equilibrium.f90
     )
   target_link_libraries(${emc}
     PRIVATE

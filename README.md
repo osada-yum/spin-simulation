@@ -9,7 +9,7 @@ cmake --build .
 or
 ```console
 fpm build --flag '-cpp'
-fpm run --flag '-cpp' Ising2d_equilibirum
+fpm run --flag '-cpp' Ising2d_equilibrium
 fpm run --flag '-cpp' Ising2d_relaxation
 ```
 # TODO
