@@ -7,12 +7,15 @@ program Ising2d_relaxation
   use xorshift_m
   use builtin_rand_m
   use ising2d_m
+  use benchmark_m
   implicit none
   type(Ising2d)                   :: system
   type(RAND_GEN_TYPE)             :: gen
   real(rkind), allocatable        :: magne(:), energy(:)
   integer, parameter              :: mcs = 1000, sample = 10
   integer                         :: i, j
+  type(benchmark_t)               :: bm
+  bm = benchmark_t()
 
   system = Ising2d(2.269_rkind, 2001, 2000)
 
@@ -25,6 +28,7 @@ program Ising2d_relaxation
   write(error_unit , '(a, f30.18)' ) "温度: ", system%kbt()
   write(error_unit , '(a, f30.18)' ) "method: METROPOLIS"
 
+  call bm%stamp("start update")
   do j = 1, sample
      !! 初期配置.
      call system%set_order_spin()
@@ -35,6 +39,7 @@ program Ising2d_relaxation
         energy(i) = energy(i) + calc_energy(system)
      end do
   end do
+  call bm%stamp("end update")
 
   !! 平均とって出力.
   magne(:)  =  magne(:) / sample

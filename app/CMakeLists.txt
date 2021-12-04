@@ -32,6 +32,7 @@ foreach(emc IN ITEMS ${EXE_2D-Ising_EMC_BUILTIN} ${EXE_2D-Ising_EMC_XOR96})
   target_link_libraries(${emc}
     PRIVATE
     ${LIB_SPINS}
+    ${LIB_BENCH}
     )
   target_include_directories(${emc}
     PRIVATE
@@ -52,6 +53,7 @@ foreach(ner IN ITEMS ${EXE_2D-Ising_NER_BUILTIN} ${EXE_2D-Ising_NER_XOR96})
   target_link_libraries(${ner}
     PRIVATE
     ${LIB_SPINS}
+    ${LIB_BENCH}
     )
   target_include_directories(${ner}
     PRIVATE

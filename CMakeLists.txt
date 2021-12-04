@@ -10,6 +10,7 @@ set(CMAKE_Fortran_FLAGS_RELEASE   "-O3 -DNDEBUG")
 project(monte-carlo-simulation Fortran)
 
 set(LIB_SPINS spins) # utility functions.
+set(LIB_BENCH benchmark) # for benchmark.
 
 add_subdirectory(src)
 add_subdirectory(app)

@@ -1,4 +1,5 @@
       program Ising2d_equilibrium_f77
+      use benchmark_m
       implicit real(8) (a-h,o-z)
       parameter(nx=501, ny=500, N=nx*ny, noff=nx, nall=N+2*noff)
       parameter(ilb=-noff+1, irb=ilb+nall)
@@ -8,11 +9,13 @@
       dimension exparr(-8:8)
       dimension dkbts(nkbt), dmagne(nkbt), energy(nkbt)
       dimension rnd(N)
+      type(benchmark_t) :: bm
       write(6, '(a,i0)'     ) "# N = ", N
       write(6, '(a,i0)'     ) "# MCS(relaxation) = ", mcs_relx
       write(6, '(a,i0)'     ) "# MCS(sampling)   = ", mcs_smpl
       write(0, '(3(a, i0))' ) "nx", nx, " ny", ny
       write(0, '(a, f30.18)') "method: METROPOLIS"
+      bm = benchmark_t()
 c initialize dkbts, Ising, energy, dmagne.
       do i = 1, nkbt
          dkbts(i) =
@@ -39,6 +42,7 @@ c update Ising in each temperatures.
       exparr = 1.0d0
       energy = 0.0d0
       magne  = 0.0d0
+      call bm%stamp("start update")
       do k = 1, nkbt
          dbeta = 1/dkbts(k)
          write(0, '(a, i7, es23.15)') "iterate: ", k, dkbts(k)
@@ -88,6 +92,7 @@ c           update Ising with checkerboard pattern.
          dmagne(k) = dm / mcs_smpl
          energy(k) = e  / mcs_smpl
       end do ! end k (1:nkbt)
+      call bm%stamp("end update")
 c print parameters.
       write(6, '(a)') "# temperature, magne, energy"
       do k = 1, nkbt

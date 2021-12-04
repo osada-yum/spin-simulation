@@ -19,3 +19,7 @@ target_link_libraries(${LIB_SPINS}
   ${LIB_RANDOM}
   ${LIB_MODEL}
   )
+add_library(${LIB_BENCH}
+  STATIC
+  benchmark_m.f90
+  )
