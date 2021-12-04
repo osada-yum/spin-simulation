@@ -142,13 +142,13 @@ contains
     real                              :: elapsed_sec
     call system_clock(this%time_end_cnt)
     elapsed_sec = real(this%time_end_cnt-this%time_beg_cnt)/real(this%cnt_per_sec)
-    write(error_unit, '(a, f8.3, a)')  message&
-         , elapsed_sec, " sec"
-    this%time_beg_cnt =  this%time_end_cnt
+    write(error_unit, '(a, f8.3, a)')  message, elapsed_sec, " sec"
+    this%time_beg_cnt = this%time_end_cnt
     call this%stamp_lst%add_front(message, elapsed_sec)
   end subroutine stamp_counter_bench
 
   subroutine dump_counter_bench(this)
+    !! `dump_counter_bench`: print all elements of `this%stamp_lst`.
     class(benchmark_t), intent(in) :: this
     call this%stamp_lst%dump()
   end subroutine dump_counter_bench
