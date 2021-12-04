@@ -119,16 +119,15 @@ contains
 
   subroutine destroy_st_lst(lst)
     !! `destroy_st_lst`: deallocate all elements of list.
-    type(stamp_time_list_t), target, intent(inout) :: lst
-    type(stamp_time_list_t), pointer               :: lst_tmp
-    lst_tmp => lst
-    do while(associated(lst_tmp))
-       write(error_unit, *) lst_tmp%stamp, lst_tmp%time
-       call util_warning("deallocate", __LINE__, __FILE__)
-       lst_tmp => lst
-       lst     = lst%next
+    type(stamp_time_list_t), intent(inout) :: lst
+    type(stamp_time_list_t), pointer       :: lst_tmp
+    lst_tmp => lst%next
+    call util_debug_print("finalize stamp_time_list_t"&
+         , __LINE__, __FILE__)
+    if (associated(lst_tmp)) then
        deallocate(lst_tmp)
-    end do
+       nullify(lst_tmp)
+    end if
   end subroutine destroy_st_lst
 
   impure type(benchmark_t) function init_benchmark_t() result(bench)
@@ -160,8 +159,13 @@ contains
   end subroutine dump_counter_bench
 
   subroutine destroy_benchmark_t(bm)
+    !! `destroy_benchmark_t`: deallocate `stamp_lst`.
     type(benchmark_t), intent(inout) :: bm
-    call destroy_st_lst(bm%stamp_lst)
+    if (associated(bm%stamp_lst)) then
+       deallocate(bm%stamp_lst)
+    end if
+    call util_debug_print("finalize benchmark_t"&
+         , __LINE__, __FILE__)
   end subroutine destroy_benchmark_t
 
 end module benchmark_m
