@@ -23,3 +23,11 @@ add_library(${LIB_BENCH}
   STATIC
   benchmark_m.f90
   )
+target_link_libraries(${LIB_BENCH}
+  PUBLIC
+  ${LIB_UTIL}
+  )
+target_include_directories(${LIB_BENCH}
+  PUBLIC
+  ${CMAKE_BINARY_DIR}/src
+  )
