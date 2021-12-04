@@ -73,6 +73,8 @@ program Ising2d_equilibrium
             magne_mean, energy_mean
     end do
   end block print_order_parameter
+  call bm%dump()
+  call destroy_benchmark_t(bm)
 
   deallocate( magne, energy )
 

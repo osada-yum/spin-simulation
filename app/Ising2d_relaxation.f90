@@ -53,6 +53,8 @@ program Ising2d_relaxation
           i, &
           magne(i), energy(i)
   end do
+  call bm%dump()
+  call destroy_benchmark_t(bm)
 
   deallocate( magne, energy )
 

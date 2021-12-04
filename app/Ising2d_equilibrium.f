@@ -100,6 +100,8 @@ c print parameters.
      &        nx, "x", ny,
      &        k, dkbts(k), dmagne(k), energy(k)
       end do
+      call bm%dump()
+      call destroy_benchmark_t(bm)
 c print all spins including norishiro
 c$$$      do j = 0, ny+1
 c$$$         write(0, '(i4, a)', advance="NO") j, ": "
