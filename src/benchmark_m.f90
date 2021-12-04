@@ -61,21 +61,6 @@ contains
     nullify(st_lst%next)
   end function init_stamp_time_list_t
 
-  subroutine init_stamp_time_list_subroutine(st_lst,stamp, time)
-    !! `init_stamp_time_list_subroutine`: initialize with `stamp` and `time`.
-    type(stamp_time_list_t), pointer :: st_lst
-    character(len=*), intent(in)     :: stamp
-    real            , intent(in)     :: time
-    allocate(st_lst)
-    if (.not. associated(st_lst)) then
-       call util_error_stop("failed: init of stamp_time_list_t"&
-            , __LINE__, __FILE__)
-    end if
-    st_lst%stamp = stamp
-    st_lst%time  = time
-    nullify(st_lst%next)
-  end subroutine init_stamp_time_list_subroutine
-
   pure function head_stmp_st_lst(this) result(stmp)
     !! `head_stmp_st_lst`: return `stamp` in head of list.
     class(stamp_time_list_t), intent(in) :: this
@@ -148,15 +133,9 @@ contains
 
   impure type(benchmark_t) function init_benchmark_t() result(bench)
     !! `init_conuter_bench`: initialize benchmark_t.
-    class(stamp_time_list_t), pointer :: lst
     call system_clock(bench%time_beg_cnt, bench%cnt_per_sec, bench%cnt_max)
     bench%time_end_cnt =  bench%time_beg_cnt
-    ! call init_stamp_time_list_subroutine(bench%stamp_lst, "init", 0.0)
-    call init_stamp_time_list_subroutine(lst, "init", 0.0)
-    bench%stamp_lst => lst
-    nullify(lst)
-    ! lst => null()
-    ! lst    => stamp_time_list_t("init", 0.0)
+    bench%stamp_lst    => stamp_time_list_t("init", 0.0)
   end function init_benchmark_t
 
   subroutine stamp_counter_bench(this, message)
