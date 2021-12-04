@@ -1,9 +1,9 @@
 module benchmark_m
   use, intrinsic :: iso_fortran_env, only : int64, error_unit
-  use utility_m, only : util_warning, util_error_stop
+  use utility_m, only : util_debug_print, util_error_stop
   implicit none
+  private
 
-  private stamp_time_list_t
   type :: stamp_time_list_t
      private
      character(len=128)               :: stamp
@@ -22,12 +22,8 @@ module benchmark_m
   interface stamp_time_list_t
      module procedure init_stamp_time_list_t
   end interface Stamp_Time_List_T
-  private :: init_stamp_time_list_t
-  ! interface add_front_st_lst
-  !    module procedure add_front_st, add_front_lst
-  ! end interface add_front_st_lst
-  private :: add_front_st, add_front_lst
 
+  public :: benchmark_t, destroy_benchmark_t
   type :: benchmark_t
      private
      integer(int64)                   :: time_beg_cnt, time_end_cnt, cnt_per_sec, cnt_max
@@ -42,7 +38,6 @@ module benchmark_m
   interface benchmark_t
      module procedure init_benchmark_t
   end interface Benchmark_T
-  private :: init_benchmark_t
 
 contains
 
