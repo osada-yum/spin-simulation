@@ -7,6 +7,7 @@ foreach(model IN ITEMS ${LIB_2D-Ising})
     )
   target_link_libraries(${model}
     PRIVATE
+    ${LIB_UTIL}
     ${LIB_RANDOM}
     )
   target_include_directories(${model}

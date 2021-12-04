@@ -1,6 +1,3 @@
-! -cpp を使っている.
-# define ERROR(message) write(0,'(3a,i0,2a)') "Error in ", __FILE__, ", line ", __LINE__, ": "!, (message)
-
 ! skew boundary condition Square lattice Ising model.
 module Ising2d_m
   use, intrinsic :: iso_fortran_env
@@ -23,6 +20,7 @@ module Ising2d_m
      integer(ikind)              :: neighbors_indices_array_s(num_neighbors)
      integer(ikind), allocatable :: spin_s(:)
      real(rkind)                 :: ising_exp_s(-8:8)                        ! 更新確率の配列(使うのは5パターン-4,-2,0,+2,+4).
+     procedure(updater), pointer :: updater_s => null()
    contains
      ! getter
      procedure,pass :: x                 => get_x
@@ -41,6 +39,8 @@ module Ising2d_m
      procedure,pass :: set_random_spin   => set_random_spin_ising
      procedure,pass :: norishiro         => norishiro_ising
      ! updater
+     procedure,pass :: set_updater                    => set_updater_ising
+     procedure,pass :: update_one_mcs                 => update_one_mcs_ising
      procedure,pass :: update_with_Metropolis_one_mcs => update_Metropolis_one_mcs_ising
   end type Ising2d
 
@@ -50,6 +50,16 @@ module Ising2d_m
      module procedure init_Ising2d
   end interface Ising2d
 
+  interface
+     !! updater: update method.
+     subroutine updater(this, rng)
+       import Ising2d
+       import random_base_t
+       class(Ising2d)      , intent(inout) :: this
+       class(random_base_t), intent(inout) :: rng
+     end subroutine updater
+  end interface
+
 contains
   ! デフォルトコンストラクタ.
   !! init_Ising2d: kbtとx, yを引数で取る.
@@ -57,6 +67,7 @@ contains
   impure type(Ising2d) function init_Ising2d(kbt,x,y) result(res_sp)
     real(rkind), intent(in) :: kbt
     integer    , intent(in) :: x, y
+    call res_sp%set_updater("Metropolis")
     res_sp%kbt_s  = kbt
     res_sp%beta_s = 1.0_rkind/kbt
     res_sp%nx_s   = x
@@ -69,8 +80,8 @@ contains
     res_sp%all_s       = res_sp%offset_s*2 + res_sp%particles_s                                ! 配列の大きさ.
     allocate(res_sp%spin_s( (res_sp%begin_s-res_sp%offset_s):(res_sp%end_s+res_sp%offset_s) )) ! 総粒子数とのりしろの領域をとる.
     if (.not. allocated(res_sp%spin_s)) then
-       ERROR("res_sp%spin_s is not allocated.")
-       error stop 1
+       call util_error_stop("res_sp%spin_s is not allocated."&
+            , __LINE__, __FILE__)
     end if
     ! 遷移確率の配列.
     res_sp%ising_exp_s = exp( -res_sp%beta_s * array_discrete_energy_diff)
@@ -177,6 +188,24 @@ contains
          = this%spin_s(most_up         : most_up         + this%offset_s-1)
   end subroutine norishiro_ising
   ! updater
+  !! set_updater_ising: set `system%updater_s` by argument `method`.
+  subroutine set_updater_ising(system, method)
+    class(Ising2d)  , intent(inout) :: system
+    character(len=*), intent(in)    :: method
+    select case (method)
+    case("Metropolis"); system%updater_s => update_Metropolis_one_mcs_ising
+    case default
+       call util_error_stop("unknown method: "//method&
+            , __LINE__, __FILE__)
+    end select
+  end subroutine set_updater_ising
+  !! update_one_mcs_ising: 系をupdater_sで一回更新する.
+  subroutine update_one_mcs_ising(system, rand_gen)
+    class(Ising2d)      , intent(inout) :: system
+    class(random_base_t), intent(inout) :: rand_gen
+    call system%updater_s(rand_gen)
+  end subroutine update_one_mcs_ising
+
   !! update_Metropolis_one_mcs_ising: 系をMetropolis法で 1MCS だけ更新する.
   subroutine update_Metropolis_one_mcs_ising(system, rand_gen)
     class(Ising2d)      , intent(inout) :: system
