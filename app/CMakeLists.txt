@@ -13,6 +13,17 @@ set_target_properties(${EXE_2D-Ising_EMC_BUILTIN_F77}
   PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
   )
+target_compile_options(${EXE_2D-Ising_EMC_BUILTIN_F77}
+  PRIVATE
+  )
+target_link_libraries(${EXE_2D-Ising_EMC_BUILTIN_F77}
+  PRIVATE
+  ${LIB_BENCH}
+  )
+target_include_directories(${EXE_2D-Ising_EMC_BUILTIN_F77}
+  PRIVATE
+  ${CMAKE_BINARY_DIR}/src
+  )
 
 foreach(emc IN ITEMS ${EXE_2D-Ising_EMC_BUILTIN} ${EXE_2D-Ising_EMC_XOR96})
   add_executable(${emc}
