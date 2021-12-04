@@ -3,8 +3,9 @@ cmake_minimum_required(VERSION 3.0)
 enable_language(Fortran)
 enable_testing()
 
-add_compile_options(-O3 -cpp)
-add_compile_options(-Wall -cpp -O -fbounds-check -fbacktrace -g -pg -ffpe-trap=invalid,zero,overflow -std=f2008)
+set(CMAKE_Fortran_FLAGS           "-cpp")
+set(CMAKE_Fortran_FLAGS_DEBUG     "-Og -DDEBUG -Wall -Wextra -fbounds-check -fbacktrace -g -pg -ffpe-trap=invalid,zero,overflow -std=f2008")
+set(CMAKE_Fortran_FLAGS_RELEASE   "-O3 -DNDEBUG")
 
 project(monte-carlo-simulation Fortran)
 
