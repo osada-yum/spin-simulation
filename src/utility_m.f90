@@ -5,6 +5,17 @@ module utility_m
   real(rkind), parameter :: epsilon = 1e-7_rkind
 contains
 
+  pure function util_linspace(from, to, num) result(arr)
+    !! `util_linspace`: calculate Internal division point.
+    real(rkind), intent(in) :: from, to
+    integer    , intent(in) :: num
+    real(rkind)             :: arr(num)
+    integer                 :: i
+    do i = 1, num
+       arr(i) = ( (i-1)*from + (num-1-i+1)*to ) / (num-1)
+    end do
+  end function util_linspace
+
   subroutine util_debug_print(message, linum, filename)
     !! `util_debug_print`: print mesage if compiler flag is -DDEBUG.
     integer, intent(in) :: linum
