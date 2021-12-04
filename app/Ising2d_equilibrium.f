@@ -96,7 +96,9 @@ c           update Ising with checkerboard pattern.
 c print parameters.
       write(6, '(a)') "# temperature, magne, energy"
       do k = 1, nkbt
-         write(6, *) dkbts(k), dmagne(k), energy(k)
+         write(6, '(i0,a,i0," ",i0," ",*(es20.12))')
+     &        nx, "x", ny,
+     &        k, dkbts(k), dmagne(k), energy(k)
       end do
 c print all spins including norishiro
 c$$$      do j = 0, ny+1

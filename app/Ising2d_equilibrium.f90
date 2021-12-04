@@ -4,6 +4,7 @@
 
 program Ising2d_equilibrium
   use, intrinsic :: iso_fortran_env
+  use utility_m
   use xorshift_m
   use builtin_rand_m
   use ising2d_m
@@ -44,13 +45,13 @@ program Ising2d_equilibrium
   call bm%stamp("start update")
   do j = 1, num_temperature
      call system%set_kbt(temperature(j))
-     write(error_unit, '(a, f20.14)') "T: ", temperature(j)
+     write(error_unit, '(a, i7, es23.15)') "iterate: ", j, temperature(j)
      !! 空回し
      do i = 1, relx_mcs
-        call system%update_with_Metropolis_one_mcs(gen)
+        call system%update_one_mcs(gen)
      end do
      do i = 1, sample_mcs
-        call system%update_with_Metropolis_one_mcs(gen)
+        call system%update_one_mcs(gen)
         calc_order_parameters: block
           real(rkind) :: magne_tmp, energy_tmp
           call calc_magne_and_energy(system, magne_tmp, energy_tmp)

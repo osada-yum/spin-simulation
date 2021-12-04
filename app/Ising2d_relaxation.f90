@@ -4,6 +4,7 @@
 
 program Ising2d_relaxation
   use, intrinsic :: iso_fortran_env
+  use utility_m
   use xorshift_m
   use builtin_rand_m
   use ising2d_m
@@ -20,6 +21,8 @@ program Ising2d_relaxation
   system = Ising2d(2.269_rkind, 2001, 2000)
 
   call gen%set_seed(42)
+
+  call system%set_updater("Metropolis")
 
   allocate( magne(mcs), energy(mcs), source = 0.0_rkind)
   write(output_unit, '(a,i0)'      ) "# N = ", system%particles()
