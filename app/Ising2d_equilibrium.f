@@ -1,3 +1,4 @@
+      program Ising2d_equilibrium_f77
       implicit real(8) (a-h,o-z)
       parameter(nx=501, ny=500, N=nx*ny, noff=nx, nall=N+2*noff)
       parameter(ilb=-noff+1, irb=ilb+nall)
@@ -101,4 +102,4 @@ c$$$         end do
 c$$$         write(0, *)
 c$$$      end do
       stop
-      end program
+      end program Ising2d_equilibrium_f77
