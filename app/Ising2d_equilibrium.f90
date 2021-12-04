@@ -27,11 +27,8 @@ program Ising2d_equilibrium
 
   allocate( magne(num_temperature), energy(num_temperature), source = 0.0_rkind)
   allocate( temperature(num_temperature) )
-  do i = 1, num_temperature
-     temperature(i) = &
-          ( (i-1)                  *temperature_begin&
-          + (num_temperature-1-i+1)*temperature_end    ) / (num_temperature-1) ! 内分点.
-  end do
+  temperature(:) = util_linspace(temperature_begin, temperature_end, num_temperature)
+
   write(output_unit, '(a,i0)'     ) "# N = ", system%particles()
   write(output_unit, '(2(a,i0))'  ) "# MCS(relaxation) = ", relx_mcs, " MCS(sampling) = ", sample_mcs
   write(error_unit , '(3(a, i0))' ) "nx", system%x(), " ny", system%y()
