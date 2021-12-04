@@ -19,15 +19,15 @@ module random_base_m
        integer             , intent(in)    :: iseed
      end subroutine set_seed_i
      !! get_rand_i: return one random number.
-     real(8) function get_rand_i(this)
-       import random_base_t
+     real(real64) function get_rand_i(this)
+       import random_base_t, real64
        class(random_base_t), intent(inout) :: this
      end function get_rand_i
      !! arr_rand_i: set size(arr) random numbers in arr(:)
      subroutine arr_rand_i(this, arr)
-       import random_base_t
+       import random_base_t, real64
        class(random_base_t), intent(inout) :: this
-       real(8)             , intent(out)   :: arr(:)
+       real(real64)        , intent(out)   :: arr(:)
      end subroutine arr_rand_i
   end interface
 end module random_base_m
