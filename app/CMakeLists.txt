@@ -68,14 +68,14 @@ foreach(ner IN ITEMS ${EXE_2D-Ising_NER_BUILTIN} ${EXE_2D-Ising_NER_XOR96})
 endforeach()
 
 foreach(builtin IN ITEMS ${EXE_2D-Ising_EMC_BUILTIN} ${EXE_2D-Ising_NER_BUILTIN})
-  target_compile_options(${builtin}
+  target_compile_definitions(${builtin}
     PRIVATE
-    -DRAND_GEN_TYPE=builtin_rand_wrapper -cpp
+    -DRAND_GEN_TYPE=builtin_rand_wrapper
     )
 endforeach()
 foreach(xor96 IN ITEMS ${EXE_2D-Ising_EMC_XOR96} ${EXE_2D-Ising_NER_XOR96})
-  target_compile_options(${xor96}
+  target_compile_definitions(${xor96}
     PRIVATE
-    -DRAND_GEN_TYPE=xor96 -cpp
+    -DRAND_GEN_TYPE=xor96
     )
 endforeach()
