@@ -60,11 +60,11 @@ c           update Ising with checkerboard pattern.
      &                 (Ising(i+1)+Ising(i-1)+Ising(i+nx)+Ising(i-nx))
                   if (rnd(i) .lt. exparr(ide)) Ising(i) = -Ising(i)
                end do
-            end do
-c           update norishiro.
-            do i = 1, noff
-               Ising(i-noff) = Ising(i+N-noff)
-               Ising(i+N)    = Ising(i)
+c              update norishiro.
+               do i = 1, noff
+                  Ising(i-noff) = Ising(i+N-noff)
+                  Ising(i+N)    = Ising(i)
+               end do
             end do
          end do ! end j (1:mcs_relx)
 c        relax Ising with Metropolis and calculate parameters.
@@ -78,6 +78,11 @@ c           update Ising with checkerboard pattern.
                   ide = 2*Ising(i)*
      &                 (Ising(i+1)+Ising(i-1)+Ising(i+nx)+Ising(i-nx))
                   if (rnd(i) .lt. exparr(ide)) Ising(i) = -Ising(i)
+               end do
+c              update norishiro.
+               do i = 1, noff
+                  Ising(i-noff) = Ising(i+N-noff)
+                  Ising(i+N)    = Ising(i)
                end do
             end do
             magne   = 0
