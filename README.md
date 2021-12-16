@@ -16,6 +16,7 @@ fpm run --flag '-cpp' Ising2d_relaxation
 # TODO
 - [ ] compare speed of `f77 style`, `f90 with module style` and  `f90 with OOP`.
   - [x] f77 style
+  - [x] f77 style with function
   - [ ] f90 with module style
   - [x] f90 with OOP
 - [ ] implement several spin models and algorithms.
