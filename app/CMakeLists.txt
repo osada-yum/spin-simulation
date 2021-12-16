@@ -1,5 +1,6 @@
 # Equilibrium Monte-Carlo
 set(EXE_2D-Ising_EMC_BUILTIN_F77 Ising2d_equilibrium_builtin_rand_f77.out)
+set(EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC Ising2d_equilibrium_builtin_rand_f77_withfunc.out)
 set(EXE_2D-Ising_EMC_BUILTIN Ising2d_equilibrium_builtin_rand.out)
 set(EXE_2D-Ising_EMC_XOR96   Ising2d_equilibrium_xor96.out)
 # Non-Equilibrium relaxation
@@ -21,6 +22,25 @@ target_link_libraries(${EXE_2D-Ising_EMC_BUILTIN_F77}
   ${LIB_BENCH}
   )
 target_include_directories(${EXE_2D-Ising_EMC_BUILTIN_F77}
+  PRIVATE
+  ${CMAKE_BINARY_DIR}/src
+  )
+
+add_executable(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
+  Ising2d_equilibrium_f77.f
+  )
+set_target_properties(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
+target_compile_options(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
+  PRIVATE
+  )
+target_link_libraries(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
+  PRIVATE
+  ${LIB_BENCH}
+  )
+target_include_directories(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
   PRIVATE
   ${CMAKE_BINARY_DIR}/src
   )
