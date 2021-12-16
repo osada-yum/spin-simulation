@@ -24,7 +24,7 @@ fpm run --flag '-cpp' Ising2d_relaxation
 	- [x] with Metropolis method
 
 # Implementation
-Modern Fortran implementation of Metropolis method for 2-dimensional ferromagnetic Ising model with skew boundary condition.
+Modern Fortran implementation of the Metropolis algorithm for the 2-dimensional ferromagnetic Ising model with skew boundary condition.
 
 ## 2D-Ising
-You can initialize `Ising2d` by kbt (temperature), x and y (number of sites on the x,y-axis), update it by Metropolis method and calculate its magnetism and energy.
+You can initialize the variable of `Ising2d` by kbt (temperature), x and y (number of sites on the x,y-axis), update it by the Metropolis algorithm and calculate its magnetism and energy.
