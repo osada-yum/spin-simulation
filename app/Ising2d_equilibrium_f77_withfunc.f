@@ -80,7 +80,7 @@ c
 c internal division point.
       do i = 1, n
          arr(i) =
-     &        ( (i-1)       *beg
+     &        ( (i-1)    *beg
      &        + (n-1-i+1)*end ) / (n-1)
       end do
       end subroutine
