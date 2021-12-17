@@ -22,6 +22,7 @@ c initialize dkbts, Ising, energy, dmagne.
 
       call random_number(rnd)
       call init_Ising(ilb, iub, N, noff, rnd, Ising)
+c$$$      call print_Ising(ilb, iub, nx, ny, Ising)
 
 c update norishiro.
       call norishiro(ilb, iub, n, noff, Ising)
@@ -96,7 +97,6 @@ c
          end if
       end do
       call norishiro(ilb, iub, n, noff, Ising)
-c$$$      call print_Ising(ilb, iub, nx, ny, Ising)
       end subroutine
 c
       subroutine init_exparr(dbeta, exparr)
