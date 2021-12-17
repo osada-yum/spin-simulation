@@ -27,10 +27,7 @@ c initialize dkbts, Ising, energy, dmagne.
       dmagne = 0.0d0
 c
 c update norishiro.
-      do i = 1, noff
-         Ising(i-noff) = Ising(i+N-noff)
-         Ising(i+N)    = Ising(i)
-      end do
+      call norishiro(ilb, iub, n, noff, Ising)
 c update Ising in each temperatures.
       exparr = 1.0d0
       energy = 0.0d0
