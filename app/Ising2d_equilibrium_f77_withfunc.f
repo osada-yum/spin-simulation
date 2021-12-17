@@ -23,9 +23,6 @@ c initialize dkbts, Ising, energy, dmagne.
       call random_number(rnd)
       call init_Ising(ilb, iub, N, noff, rnd, Ising)
 
-      energy = 0.0d0
-      dmagne = 0.0d0
-c
 c update norishiro.
       call norishiro(ilb, iub, n, noff, Ising)
 c update Ising in each temperatures.
