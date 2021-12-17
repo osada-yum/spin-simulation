@@ -45,7 +45,7 @@ c        relax Ising with Metropolis.
          do j = 1, mcs_relx
 c           update Ising with checkerboard pattern.
             call random_number(rnd)
-            call Metropolis(ilb, iub, N, nx, rnd, exparr, Ising)
+            call Metropolis(ilb, iub, N, nx, noff, rnd, exparr, Ising)
          end do ! end j (1:mcs_relx)
 c        relax Ising with Metropolis and calculate parameters.
          dm = 0.0d0
@@ -53,7 +53,7 @@ c        relax Ising with Metropolis and calculate parameters.
          do j = 1, mcs_smpl
 c           update Ising with checkerboard pattern.
             call random_number(rnd)
-            call Metropolis(ilb, iub, N, nx, rnd, exparr, Ising)
+            call Metropolis(ilb, iub, N, nx, noff, rnd, exparr, Ising)
             magne   = 0
             ienergy = 0
             do i = 1, N
@@ -91,7 +91,7 @@ c internal division point.
       end do
       end subroutine
 c
-      subroutine init_Ising(ilb, iub, n, rnd, Ising)
+      subroutine init_Ising(ilb, iub, n, noff, rnd, Ising)
       implicit real(8) (a-h,o-z)
       dimension rnd(n), Ising(ilb:iub)
       do i = 1, N
@@ -113,7 +113,7 @@ c
       end do
       end subroutine
 c
-      subroutine Metropolis(ilb, iub, n, nx, rnd, exparr, Ising)
+      subroutine Metropolis(ilb, iub, n, nx, noff, rnd, exparr, Ising)
       implicit real(8) (a-h,o-z)
       dimension rnd(n), exparr(-8:8), Ising(ilb:iub)
       do is = 1, 2
