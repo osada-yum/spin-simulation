@@ -27,7 +27,7 @@ target_include_directories(${EXE_2D-Ising_EMC_BUILTIN_F77}
   )
 
 add_executable(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
-  Ising2d_equilibrium_f77.f
+  Ising2d_equilibrium_f77_withfunc.f
   )
 set_target_properties(${EXE_2D-Ising_EMC_BUILTIN_F77_WITHFUNC}
   PROPERTIES
