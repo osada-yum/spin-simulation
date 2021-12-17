@@ -49,14 +49,9 @@ c        relax Ising with Metropolis and calculate parameters.
 c           update Ising with checkerboard pattern.
             call random_number(rnd)
             call Metropolis(ilb, iub, N, nx, noff, rnd, exparr, Ising)
-            magne   = 0
-            ienergy = 0
-            do i = 1, N
-               magne   = magne   + Ising(i)
-               ienergy = ienergy - Ising(i)*(Ising(i+1)+Ising(i+nx))
-            end do
-            dm = dm + 1.0d0*magne   / N
-            e  = e  + 1.0d0*ienergy / N
+            call calc_energy_magne(ilb, iub, nx, N, e_tmp, dm_tmp,Ising)
+            e  = e  + e_tmp
+            dm = dm + dm_tmp
          end do ! end j (1:mcs_smpl)
          dmagne(k) = dm / mcs_smpl
          energy(k) = e  / mcs_smpl
@@ -140,4 +135,17 @@ c
          end do
          write(0, *)
       end do
+      end subroutine
+c
+      subroutine calc_energy_magne(ilb, iub, nx, N, e_tmp, dm_tmp,Ising)
+      implicit real(8) (a-h,o-z)
+      dimension Ising(ilb:iub)
+      magne   = 0
+      ienergy = 0
+      do i = 1, N
+         ienergy = ienergy - Ising(i)*(Ising(i+1)+Ising(i+nx))
+         magne   = magne   + Ising(i)
+      end do
+      e_tmp  = 1.0d0*ienergy / N
+      dm_tmp = 1.0d0*magne   / N
       end subroutine
