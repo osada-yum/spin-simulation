@@ -31,11 +31,6 @@ c initialize dkbts, Ising, energy, dmagne.
          end if
 c$$$         print '(i5, a, i0)', i, ": ", Ising(i)
       end do
-c     norishiro
-      do i = 1, noff
-         Ising(i-noff) = Ising(i+N-noff)
-         Ising(i+N)    = Ising(i)
-      end do
       energy = 0.0d0
       dmagne = 0.0d0
 c update norishiro.
