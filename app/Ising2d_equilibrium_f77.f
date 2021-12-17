@@ -24,7 +24,7 @@ c initialize dkbts, Ising, energy, dmagne.
       end do
       call random_number(rnd)
       do i = 1, N
-         if (rnd(i) < 0.5d0) then
+         if (rnd(i) .lt. 0.5d0) then
             Ising(i) = +1
          else
             Ising(i) = -1

@@ -90,7 +90,7 @@ c
       implicit real(8) (a-h,o-z)
       dimension rnd(n), Ising(ilb:iub)
       do i = 1, N
-         if (rnd(i) < 0.5d0) then
+         if (rnd(i) .lt. 0.5d0) then
             Ising(i) = +1
          else
             Ising(i) = -1
