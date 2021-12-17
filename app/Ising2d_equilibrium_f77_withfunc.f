@@ -21,7 +21,7 @@ c initialize dkbts, Ising, energy, dmagne.
       call linspace(nkbt, dkbt_beg, dkbt_end, dkbts)
 
       call random_number(rnd)
-      call init_Ising(ilb, iub, N, rnd, Ising)
+      call init_Ising(ilb, iub, N, noff, rnd, Ising)
 
       energy = 0.0d0
       dmagne = 0.0d0
