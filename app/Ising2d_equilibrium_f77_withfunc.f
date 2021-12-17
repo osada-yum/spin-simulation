@@ -3,10 +3,10 @@
       use benchmark_m
       implicit real(8) (a-h,o-z)
       parameter(nx=501, ny=500, N=nx*ny, noff=nx, nall=N+2*noff)
-      parameter(ilb=-noff+1, irb=ilb+nall)
+      parameter(ilb=-noff+1, iub=ilb+nall)
       parameter(nkbt=100, dkbt_beg=1.7d0, dkbt_end=2.4d0)
       parameter(mcs_relx=1000, mcs_smpl=1000)
-      dimension Ising(ilb:irb)
+      dimension Ising(ilb:iub)
       dimension exparr(-8:8)
       dimension dkbts(nkbt), dmagne(nkbt), energy(nkbt)
       dimension rnd(N)
@@ -21,7 +21,7 @@ c initialize dkbts, Ising, energy, dmagne.
       call linspace(nkbt, dkbt_beg, dkbt_end, dkbts)
 
       call random_number(rnd)
-      call init_Ising(ilb, N, rnd, Ising)
+      call init_Ising(ilb, iub, N, rnd, Ising)
 
       energy = 0.0d0
       dmagne = 0.0d0
@@ -45,7 +45,7 @@ c        relax Ising with Metropolis.
          do j = 1, mcs_relx
 c           update Ising with checkerboard pattern.
             call random_number(rnd)
-            call Metropolis(ilb, N, nx, rnd, exparr, Ising)
+            call Metropolis(ilb, iub, N, nx, rnd, exparr, Ising)
          end do ! end j (1:mcs_relx)
 c        relax Ising with Metropolis and calculate parameters.
          dm = 0.0d0
@@ -53,7 +53,7 @@ c        relax Ising with Metropolis and calculate parameters.
          do j = 1, mcs_smpl
 c           update Ising with checkerboard pattern.
             call random_number(rnd)
-            call Metropolis(ilb, N, nx, rnd, exparr, Ising)
+            call Metropolis(ilb, iub, N, nx, rnd, exparr, Ising)
             magne   = 0
             ienergy = 0
             do i = 1, N
@@ -77,12 +77,12 @@ c print parameters.
       call bm%dump()
       call destroy_benchmark_t(bm)
 c print all spins including norishiro
-c$$$      call print_Ising(ilb, nx, ny, Ising)
+c$$$      call print_Ising(ilb, iub, nx, ny, Ising)
       end program Ising2d_equilibrium_f77_withfunc
 c
       subroutine linspace(n, beg, end, arr)
       implicit real(8) (a-h,o-z)
-      dimenstion arr(n)
+      dimension arr(n)
 c internal division point.
       do i = 1, n
          arr(i) =
@@ -91,27 +91,31 @@ c internal division point.
       end do
       end subroutine
 c
-      subroutine init_Ising(ilb, n, rnd, I)
-      dimension rnd(n), Ising(ilb:)
+      subroutine init_Ising(ilb, iub, n, rnd, Ising)
+      implicit real(8) (a-h,o-z)
+      dimension rnd(n), Ising(ilb:iub)
       do i = 1, N
          if (rnd(i) < 0.5d0) then
-            I(i) = +1
+            Ising(i) = +1
          else
-            I(i) = -1
+            Ising(i) = -1
          end if
       end do
-c$$$      call print_Ising(ilb, nx, ny, Ising)
+      call norishiro(ilb, iub, n, noff, Ising)
+c$$$      call print_Ising(ilb, iub, nx, ny, Ising)
       end subroutine
 c
       subroutine init_exparr(dbeta, exparr)
+      implicit real(8) (a-h,o-z)
       dimension exparr(-8:8)
       do i = 1, 8
          exparr(i) = exp(-dbeta*i)
       end do
       end subroutine
 c
-      subroutine Metropolis(ilb, n, nx, rnd, exparr, Ising)
-      dimension rnd(n), exparr(-8:8), Ising(ilb:)
+      subroutine Metropolis(ilb, iub, n, nx, rnd, exparr, Ising)
+      implicit real(8) (a-h,o-z)
+      dimension rnd(n), exparr(-8:8), Ising(ilb:iub)
       do is = 1, 2
          do i = is, n, 2
             ide = 2*Ising(i)*
@@ -119,20 +123,22 @@ c
             if (rnd(i) .lt. exparr(ide)) Ising(i) = -Ising(i)
          end do
 c        update norishiro.
-         call norishiro(ilb, n, noff, Ising)
+         call norishiro(ilb, iub, n, noff, Ising)
       end do
       end subroutine
 c
-      subroutine norishiro(ilb, n, noff, Ising)
-      dimension Ising(ilb:)
+      subroutine norishiro(ilb, iub, n, noff, Ising)
+      implicit real(8) (a-h,o-z)
+      dimension Ising(ilb:iub)
       do i = 1, noff
          Ising(i-noff) = Ising(i+n-noff)
          Ising(i+n)    = Ising(i)
       end do
       end subroutine
 c
-      subroutine print_Ising(ilb, nx, ny, Ising)
-      dimension Ising(ilb:)
+      subroutine print_Ising(ilb, iub, nx, ny, Ising)
+      implicit real(8) (a-h,o-z)
+      dimension Ising(ilb:iub)
       do j = 0, ny+1
          write(0, '(i4, a)', advance="NO") j, ": "
          do i = 1, nx
