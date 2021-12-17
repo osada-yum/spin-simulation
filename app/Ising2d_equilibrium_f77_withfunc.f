@@ -134,7 +134,7 @@ c
       implicit real(8) (a-h,o-z)
       dimension Ising(ilb:iub)
       do j = 0, ny+1
-         write(0, '(i4, a)', advance="NO") j, ": "
+         write(0, '(i8, a)', advance="NO") j, ": "
          do i = 1, nx
             write(0, '(i3)', advance="NO") Ising((j-1)*nx+i)
          end do

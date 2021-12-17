@@ -109,7 +109,7 @@ c print parameters.
       call destroy_benchmark_t(bm)
 c print all spins including norishiro
 c$$$      do j = 0, ny+1
-c$$$         write(0, '(i4, a)', advance="NO") j, ": "
+c$$$         write(0, '(i8, a)', advance="NO") j, ": "
 c$$$         do i = 1, nx
 c$$$            write(0, '(i3)', advance="NO") Ising((j-1)*nx+i)
 c$$$         end do
