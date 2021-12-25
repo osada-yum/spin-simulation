@@ -50,10 +50,10 @@ program Ising2d_equilibrium
      do i = 1, sample_mcs
         call system%update_one_mcs(gen)
         calc_order_parameters: block
-          real(rkind) :: magne_tmp, energy_tmp
-          call calc_magne_and_energy(system, magne_tmp, energy_tmp)
-          magne(j)  = magne(j)  + magne_tmp
-          energy(j) = energy(j) + energy_tmp
+          real(rkind) :: m_tmp, e_tmp
+          call calc_magne_and_energy(system, m_tmp, e_tmp)
+          magne(j)  = magne(j)  + abs(m_tmp)
+          energy(j) = energy(j) + e_tmp
         end block calc_order_parameters
      end do
   end do

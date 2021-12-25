@@ -51,7 +51,7 @@ c           update Ising with checkerboard pattern.
             call Metropolis(ilb, iub, N, nx, noff, rnd, exparr, Ising)
             call calc_energy_magne(ilb, iub, nx, N, e_tmp, dm_tmp,Ising)
             e  = e  + e_tmp
-            dm = dm + dm_tmp
+            dm = dm + abs(dm_tmp)
          end do ! end j (1:mcs_smpl)
          dmagne(k) = dm / mcs_smpl
          energy(k) = e  / mcs_smpl

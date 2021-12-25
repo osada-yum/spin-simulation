@@ -91,8 +91,8 @@ c              update norishiro.
                magne   = magne   + Ising(i)
                ienergy = ienergy - Ising(i)*(Ising(i+1)+Ising(i+nx))
             end do
-            dm = dm + 1.0d0*magne   / N
-            e  = e  + 1.0d0*ienergy / N
+            dm = dm + abs(1.0d0*magne / N)
+            e  = e  +     1.0d0*ienergy / N
          end do ! end j (1:mcs_smpl)
          dmagne(k) = dm / mcs_smpl
          energy(k) = e  / mcs_smpl
