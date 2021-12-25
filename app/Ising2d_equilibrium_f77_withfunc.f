@@ -39,7 +39,6 @@ c        Initialize exparr.
 c        relax Ising with Metropolis.
          do j = 1, mcs_relx
 c           update Ising with checkerboard pattern.
-            call random_number(rnd)
             call Metropolis(ilb, iub, N, nx, noff, rnd, exparr, Ising)
          end do ! end j (1:mcs_relx)
 c        relax Ising with Metropolis and calculate parameters.
@@ -47,7 +46,6 @@ c        relax Ising with Metropolis and calculate parameters.
          e  = 0.0d0
          do j = 1, mcs_smpl
 c           update Ising with checkerboard pattern.
-            call random_number(rnd)
             call Metropolis(ilb, iub, N, nx, noff, rnd, exparr, Ising)
             call calc_energy_magne(ilb, iub, nx, N, e_tmp, dm_tmp,Ising)
             e  = e  + e_tmp
@@ -105,6 +103,7 @@ c
       subroutine Metropolis(ilb, iub, n, nx, noff, rnd, exparr, Ising)
       implicit real(8) (a-h,o-z)
       dimension rnd(n), exparr(-8:8), Ising(ilb:iub)
+      call random_number(rnd)
       do is = 1, 2
          do i = is, n, 2
             ide = 2*Ising(i)*
