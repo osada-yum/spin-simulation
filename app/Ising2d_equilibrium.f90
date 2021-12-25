@@ -25,7 +25,8 @@ program Ising2d_equilibrium
 
   call gen%set_seed(42)
 
-  allocate( magne(num_temperature), energy(num_temperature), source = 0.0_rkind)
+  allocate( magne(num_temperature) , source = 0.0_rkind)
+  allocate( energy(num_temperature), source = 0.0_rkind)
   allocate( temperature(num_temperature) )
   temperature(:) = util_linspace(temperature_begin, temperature_end, num_temperature)
 
