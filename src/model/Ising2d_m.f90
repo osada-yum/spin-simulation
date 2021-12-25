@@ -163,9 +163,9 @@ contains
     class(Ising2d)      , intent(inout) :: this
     class(random_base_t), intent(inout) :: rand_gen
     integer                             :: i
-    real(rkind)                         :: rnd(this%particles_s)
+    real(rkind)                         :: rnd(this%begin_s:this%end_s)
     call rand_gen%random_arr(rnd)
-    do i = 1, this%particles_s
+    do i = this%begin_s, this%end_s
        if (rnd(i) > 0.5_rkind) then
           this%spin_s(i) = 1
        else
