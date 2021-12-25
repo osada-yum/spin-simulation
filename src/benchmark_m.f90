@@ -112,7 +112,7 @@ contains
     write(error_unit, '(a, f8.3, a)') trim(lst%stamp), lst%time, " sec"
   end subroutine dump_st_lst
 
-  subroutine destroy_st_lst(lst)
+  recursive subroutine destroy_st_lst(lst)
     !! `destroy_st_lst`: deallocate all elements of list.
     type(stamp_time_list_t), intent(inout) :: lst
     type(stamp_time_list_t), pointer       :: lst_tmp
