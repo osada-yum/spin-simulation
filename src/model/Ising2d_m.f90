@@ -252,7 +252,6 @@ contains
             ( system%spin(i + system%neighbors_indices_array_s(1))&
             + system%spin(i + system%neighbors_indices_array_s(3)))
     end do
-    energy = real(energy_tmp, rkind) / system%particles_s
     energy = real(energy_tmp, rkind) / system%particles()
   end function calc_energy
   !! calc_magne_and_energy: 両方計算する, 1回のループで両方計算する.
