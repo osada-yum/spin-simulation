@@ -216,7 +216,7 @@ contains
     call rand_gen%random_arr(rnd)
     do j = 0, 1
        do i = j+system%begin_s  , system%end_s, 2
-          energy_diff = energy_onespin(i, system%neighbors_indices_array_s(:), system%spin_s(:))
+          energy_diff = energy_onespin(i, system)
           !! Metropolis法の遷移確率に従ってスピンを反転させる.
           if ( rnd(i) < system%ising_exp_s(energy_diff) ) then
              system%spin_s(i) = - system%spin_s(i)
@@ -226,14 +226,14 @@ contains
     end do
   end subroutine update_Metropolis_one_mcs_ising
   !! energy_onespin: 局所的な格子のエネルギー
-  pure integer(ikind) function energy_onespin(index, neighbor_indices, spins)
-    integer       , intent(in) :: index, neighbor_indices(:)
-    integer(ikind), intent(in) :: spins(:)
-    energy_onespin = 2*J_interaction * spins(index) *&
-         ( spins(index + neighbor_indices(1))&
-         + spins(index + neighbor_indices(2))&
-         + spins(index + neighbor_indices(3))&
-         + spins(index + neighbor_indices(4)))
+  pure integer(ikind) function energy_onespin(index, s)
+    integer       , intent(in) :: index
+    class(Ising2d), intent(in) :: s
+    energy_onespin = 2*J_interaction * s%spin_s(index) *&
+         ( s%spin_s(index + s%neighbors_indices_array_s(1))&
+         + s%spin_s(index + s%neighbors_indices_array_s(2))&
+         + s%spin_s(index + s%neighbors_indices_array_s(3))&
+         + s%spin_s(index + s%neighbors_indices_array_s(4)))
   end function energy_onespin
   !! calc_magne: 磁化の計算, sum()でOK.
   pure real(rkind) function calc_magne(system) result(magne)
