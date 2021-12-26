@@ -10,7 +10,7 @@ target_include_directories(${TEST_LCG}
   )
 target_link_libraries(${TEST_LCG}
   PRIVATE
-  ${LIB_RANDOM}
+  ${LIB_SPINS}
   )
 add_test(NAME LCG_test
   COMMAND $<TARGET_FILE:${TEST_LCG}>

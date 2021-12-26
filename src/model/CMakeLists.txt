@@ -28,4 +28,3 @@ target_link_libraries(${LIB_MODEL}
   INTERFACE
   ${LIB_2D-Ising}
   )
-add_subdirectory(test)

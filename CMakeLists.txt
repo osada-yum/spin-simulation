@@ -14,3 +14,4 @@ set(LIB_BENCH benchmark) # for benchmark.
 
 add_subdirectory(src)
 add_subdirectory(app)
+add_subdirectory(test)
