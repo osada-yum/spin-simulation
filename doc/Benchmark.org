@@ -1,79 +1,91 @@
+#+LaTeX_class: article
 #+OPTIONS: toc:nil author:nil date:t
+#+LaTeX_header: \usepackage{float}
 
+#+LaTeX: \author{Yuma Osada}
+#+LaTeX: \title{Benchmark of 2D-Ising with various style and compile option}
+#+LaTeX: \hypersetup{pdfauthor=Yuma Osada, pdftitle=Benchmark of 2D-Ising with various style and compile option}
+#+LaTeX: \maketitle
 * Benchmark
 ** time
-#+NAME: elapsed_times_second_Ising2d
+#+NAME: elapsed_times_second_Ising2d (git Hash: 3dac1cb)
 #+CAPTION: elapsed time (second) for each program in Ising2d with N=51x50, nkbt=50, relx_mcs = 500000, sample_mcs = 500000.
-|-------------------+-----------------------+-----------------------|
-| compile options   | -DEBUG -g ... (Debug) | -O3 -DNDEBUG(Release) |
-|-------------------+-----------------------+-----------------------|
-|-------------------+-----------------------+-----------------------|
-| f77 style         |              2097.460 |              1239.295 |
-| f77 with function |              2280.915 |              1224.675 |
-| f90 with type     |              8243.244 |              1579.746 |
-|-------------------+-----------------------+-----------------------|
+|-------------------+----------+------------------------+-----------------------|
+| compile options   |   (None) | -DDEBUG -g ... (Debug) | -O3 -DNDEBUG(Release) |
+|-------------------+----------+------------------------+-----------------------|
+|-------------------+----------+------------------------+-----------------------|
+| f77 style         | 2112.462 |               2097.460 |              1239.295 |
+| f77 with function | 2332.756 |               2280.915 |              1224.675 |
+| f90 with type     | 4946.556 |               8243.244 |              1579.746 |
+|-------------------+----------+------------------------+-----------------------|
 * Results
 ** Ising2d_equilibrium_builtin_rand_f77.out
 *** result
 #+NAME: fig:Ising2d_equilibrium_builtin_rand_f77.out
 #+CAPTION: Result of the f77 style for equilibrium Monte Carlo simulation
-#+ATTR_LaTeX: :width \textwidth
+#+ATTR_LaTeX: :width \textwidth :placement [H]
 [[file:../pictures/result_Ising2d_equilibrium_builtin_rand_f77.png]]
 
 #+NAME: f77_style
-#+BEGIN_SRC R :var debug=results.org:IG2D_EMC_builtin_rand_f77_DEBUG.dat release=results.org:IG2D_EMC_builtin_rand_f77_RELEASE.dat :results output graphics :file ../pictures/result_Ising2d_equilibrium_builtin_rand_f77.png :width 640 :height 640 :cache yes :exports results
-  plot(debug$Temperature  , debug$magnetism,   xlab = "T", ylab = "M", col = "black")
+#+BEGIN_SRC R :var none=results.org:IG2D_EMC_builtin_rand_f77_NONE.dat debug=results.org:IG2D_EMC_builtin_rand_f77_DEBUG.dat release=results.org:IG2D_EMC_builtin_rand_f77_RELEASE.dat :results output graphics :file ../pictures/result_Ising2d_equilibrium_builtin_rand_f77.png :width 640 :height 640 :cache yes :exports results
+  plot(none$Temperature,    none$magnetism,    xlab = "T", ylab = "M", col = "black")
   par(new = T)
-  plot(release$Temperature, release$magnetism, xlab = "", ylab = ""  , col = "blue")
+  plot(debug$Temperature,   debug$magnetism,   xlab = "",  ylab = "",  col = "blue")
+  par(new = T)
+  plot(release$Temperature, release$magnetism, xlab = "",  ylab = "",  col = "red")
 #+END_SRC
 
-#+RESULTS[b4c43f60ab9979879762b26a2e017559c5292302]: f77_style
+#+RESULTS[ec09759dcdd9c850e192c3cf11ed7ec7aa58d832]: f77_style
 
 ** Ising2d_equilibrium_builtin_rand_f77_withfunc.out
 *** result
 #+NAME: fig:Ising2d_equilibrium_builtin_rand_f77_withfunc.out
 #+CAPTION: Result of the f77 style with function for equilibrium Monte Carlo simulation
-#+ATTR_LaTeX: :width \textwidth
+#+ATTR_LaTeX: :width \textwidth :placement [H]
 [[file:../pictures/result_Ising2d_equilibrium_builtin_rand_f77_withfunc.png]]
 
 #+NAME: f77_function_style
-#+BEGIN_SRC R :var debug=results.org:IG2D_EMC_builtin_rand_f77_withfunc_DEBUG.dat release=results.org:IG2D_EMC_builtin_rand_f77_withfunc_RELEASE.dat :results output graphics :file ../pictures/result_Ising2d_equilibrium_builtin_rand_f77_withfunc.png :width 640 :height 640 :cache yes :exports results
-  plot(debug$Temperature  , debug$magnetism,   xlab = "T", ylab = "M", col = "black")
+#+BEGIN_SRC R :var none=results.org:IG2D_EMC_builtin_rand_f77_withfunc_NONE.dat debug=results.org:IG2D_EMC_builtin_rand_f77_withfunc_DEBUG.dat release=results.org:IG2D_EMC_builtin_rand_f77_withfunc_RELEASE.dat :results output graphics :file ../pictures/result_Ising2d_equilibrium_builtin_rand_f77_withfunc.png :width 640 :height 640 :cache yes :exports results
+  plot(none$Temperature,    none$magnetism,    xlab = "T", ylab = "M", col = "black")
   par(new = T)
-  plot(release$Temperature, release$magnetism, xlab = "", ylab = ""  , col = "blue")
+  plot(debug$Temperature,   debug$magnetism,   xlab = "",  ylab = "",  col = "blue")
+  par(new = T)
+  plot(release$Temperature, release$magnetism, xlab = "",  ylab = "",  col = "red")
 #+END_SRC
 
-#+RESULTS[26c6163685278c3d819fd1e797fe28c26b168232]: f77_function_style
+#+RESULTS[29b10ddd72395567a9fdf833d1f5e87123d0d763]: f77_function_style
 
 ** Ising2d_equilibrium_builtin_rand.out
 *** result
 #+NAME: fig:Ising2d_equilibrium_builtin_rand.out
 #+CAPTION: Result of the f90 style with class for equilibrium Monte Carlo simulation
-#+ATTR_LaTeX: :width \textwidth
+#+ATTR_LaTeX: :width \textwidth :placement [H]
 [[file:../pictures/result_Ising2d_equilibrium_builtin_rand.png]]
 
 #+NAME: f90_class_style
-#+BEGIN_SRC R :var debug=results.org:IG2D_EMC_builtin_rand_f90_class_DEBUG.dat release=results.org:IG2D_EMC_builtin_rand_f90_class_RELEASE.dat :exports results :results output graphics :file ../pictures/result_Ising2d_equilibrium_builtin_rand.png :width 640 :height 640 :cache yes
-  plot(debug$Temperature  , debug$magnetism,   xlab = "T", ylab = "M", col = "black")
+#+BEGIN_SRC R :var none=results.org:IG2D_EMC_builtin_rand_f90_class_NONE.dat debug=results.org:IG2D_EMC_builtin_rand_f90_class_DEBUG.dat release=results.org:IG2D_EMC_builtin_rand_f90_class_RELEASE.dat :exports results :results output graphics :file ../pictures/result_Ising2d_equilibrium_builtin_rand.png :width 640 :height 640 :cache yes
+  plot(none$Temperature,    none$magnetism,    xlab = "T", ylab = "M", col = "black")
   par(new = T)
-  plot(release$Temperature, release$magnetism, xlab = "", ylab = ""  , col = "blue")
+  plot(debug$Temperature,   debug$magnetism,   xlab = "",  ylab = "",  col = "blue")
+  par(new = T)
+  plot(release$Temperature, release$magnetism, xlab = "",  ylab = "",  col = "red")
 #+END_SRC
 
-#+RESULTS[22503f75b54b4dd9be2cc075a3c07401e5c0b612]: f90_class_style
+#+RESULTS[0617d09a63b222935598c4227668a1ee1893c1cb]: f90_class_style
 
 * Compare
 #+NAME: fig:compare_EMC_magne_Ising2d
 #+CAPTION: Comparison of the magnetizations for equilibrium Monte Carlo simulation
-#+ATTR_LaTeX: :width \textwidth
+#+ATTR_LaTeX: :width \textwidth :placement [H]
 [[file:../pictures/compare_equilibrium_magne.png]]
 
 #+NAME: fig:compare_EMC_energy_Ising2d
 #+CAPTION: Comparison of the energies for equilibrium Monte Carlo simulation
-#+ATTR_LaTeX: :width \textwidth
+#+ATTR_LaTeX: :width \textwidth :placement [H]
 [[file:../pictures/compare_equilibrium_energy.png]]
 
 #+NAME: compare_EMC_magne_figure
-#+BEGIN_SRC R :var f77=results.org:IG2D_EMC_builtin_rand_f77_DEBUG.dat f77_withfunc=results.org:IG2D_EMC_builtin_rand_f77_withfunc_DEBUG.dat f90_class=results.org:IG2D_EMC_builtin_rand_f90_class_DEBUG.dat :results output graphics :file ../pictures/compare_equilibrium_magne.png :width 640 :height 640 :cache yes :exports results
+#+BEGIN_SRC R :var f77=results.org:IG2D_EMC_builtin_rand_f77_NONE.dat f77_withfunc=results.org:IG2D_EMC_builtin_rand_f77_withfunc_NONE.dat f90_class=results.org:IG2D_EMC_builtin_rand_f90_class_NONE.dat :results output graphics :file ../pictures/compare_equilibrium_magne.png :width 640 :height 640 :cache yes :exports results
   plot(f77$Temperature         , abs(f77$magnetism)         , xlim = c(1.8, 2.7), ylim = c(0.0, 1.0), col = "black", xlab = "T", ylab = "M")
   par(new = T)
   plot(f77_withfunc$Temperature, abs(f77_withfunc$magnetism), xlim = c(1.8, 2.7), ylim = c(0.0, 1.0), col = "red"  , xlab = "", ylab = "")
@@ -81,10 +93,10 @@
   plot(f90_class$Temperature   , abs(f90_class$magnetism)   , xlim = c(1.8, 2.7), ylim = c(0.0, 1.0), col = "blue" , xlab = "", ylab = "")
 #+END_SRC
 
-#+RESULTS[d3a1edb64f64b8dc899be2f43eea3bd493432d92]: compare_EMC_magne_figure
+#+RESULTS[f48f57f3092f6333843995fcb3f88bcc7e16f6fc]: compare_EMC_magne_figure
 
 #+NAME: compare_EMC_energy_figure
-#+BEGIN_SRC R :var f77=results.org:IG2D_EMC_builtin_rand_f77_DEBUG.dat f77_withfunc=results.org:IG2D_EMC_builtin_rand_f77_withfunc_DEBUG.dat f90_class=results.org:IG2D_EMC_builtin_rand_f90_class_DEBUG.dat :results output graphics :file ../pictures/compare_equilibrium_energy.png :width 640 :height 640 :cache yes :exports results
+#+BEGIN_SRC R :var f77=results.org:IG2D_EMC_builtin_rand_f77_NONE.dat f77_withfunc=results.org:IG2D_EMC_builtin_rand_f77_withfunc_NONE.dat f90_class=results.org:IG2D_EMC_builtin_rand_f90_class_NONE.dat :results output graphics :file ../pictures/compare_equilibrium_energy.png :width 640 :height 640 :cache yes :exports results
   plot(f77$Temperature         , abs(f77$energy)         , xlim = c(1.8, 2.7), ylim = c(0.0, 2.0), col = "black", xlab = "T", ylab = "E")
   par(new = T)
   plot(f77_withfunc$Temperature, abs(f77_withfunc$energy), xlim = c(1.8, 2.7), ylim = c(0.0, 2.0), col = "red"  , xlab = "", ylab = "")
@@ -92,4 +104,4 @@
   plot(f90_class$Temperature   , abs(f90_class$energy)   , xlim = c(1.8, 2.7), ylim = c(0.0, 2.0), col = "blue" , xlab = "", ylab = "")
 #+END_SRC
 
-#+RESULTS[65c4b8ae06897c2446dc942f71b1d12dcb343c9f]: compare_EMC_energy_figure
+#+RESULTS[c685173de0de3ed85dcc5ce2f00289bc8e72e1b5]: compare_EMC_energy_figure
