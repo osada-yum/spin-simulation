@@ -13,15 +13,15 @@ program Ising2d_equilibrium
   type(Ising2d)                   :: system
   type(RAND_GEN_TYPE)             :: gen
   real(rkind), allocatable        :: temperature(:)
-  real(rkind), parameter          :: temperature_begin = 1.7_rkind, temperature_end = 2.4_rkind
-  integer    , parameter          :: num_temperature = 100
+  real(rkind), parameter          :: temperature_begin = 2.0_rkind, temperature_end = 2.6_rkind
+  integer    , parameter          :: num_temperature = 50
   real(rkind), allocatable        :: magne(:), energy(:)
-  integer, parameter              :: relx_mcs = 1000, sample_mcs = 1000
+  integer, parameter              :: relx_mcs = 500000, sample_mcs = 500000
   integer                         :: i, j
   type(benchmark_t)               :: bm
   bm = benchmark_t()
 
-  system = Ising2d(1.0_rkind, 201, 200)
+  system = Ising2d(1.0_rkind, 51, 50)
 
   call gen%set_seed(42)
 
@@ -65,8 +65,8 @@ program Ising2d_equilibrium
     do i = 1, num_temperature
        magne_mean  = magne(i)  / sample_mcs
        energy_mean = energy(i) / sample_mcs
-       write(output_unit,'(i0,a,i0, " ", *(es20.12))') &
-            system%x(), "x", system%y(),&
+       write(output_unit,'(i0,a,i0, " ", i0, " ", *(es20.12))') &
+            system%x(), "x", system%y(), i, &
             temperature(i), &
             magne_mean, energy_mean
     end do

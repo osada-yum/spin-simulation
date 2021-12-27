@@ -2,10 +2,10 @@
       use utility_m
       use benchmark_m
       implicit real(8) (a-h,o-z)
-      parameter(nx=501, ny=500, N=nx*ny, noff=nx, nall=N+2*noff)
-      parameter(ilb=-noff+1, iub=ilb+nall)
-      parameter(nkbt=100, dkbt_beg=1.7d0, dkbt_end=2.4d0)
-      parameter(mcs_relx=1000, mcs_smpl=1000)
+      parameter(nx=51, ny=50, N=nx*ny, noff=nx, nall=N+2*noff)
+      parameter(ilb=-noff+1, iub=ilb+nall-1)
+      parameter(nkbt=50, dkbt_beg=2.0d0, dkbt_end=2.6d0)
+      parameter(mcs_relx=500000, mcs_smpl=500000)
       dimension Ising(ilb:iub)
       dimension exparr(-8:8)
       dimension dkbts(nkbt), dmagne(nkbt), energy(nkbt)
