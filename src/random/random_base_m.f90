@@ -4,6 +4,7 @@ module random_base_m
   private
 
   public :: random_base_t
+  !> `random_base_t`: Provide interfaces of generating random number.
   type, abstract :: random_base_t
    contains
      procedure(set_seed_i), deferred :: set_seed
@@ -12,18 +13,18 @@ module random_base_m
   end type random_base_t
 
   interface
-     !! set_seed_i: initialize seed.
+     !> `set_seed_i`: Initialize seed.
      subroutine set_seed_i(this, iseed)
        import random_base_t
        class(random_base_t), intent(inout) :: this
        integer             , intent(in)    :: iseed
      end subroutine set_seed_i
-     !! get_rand_i: return one random number.
+     !> `get_rand_i`: Return one random number.
      real(real64) function get_rand_i(this)
        import random_base_t, real64
        class(random_base_t), intent(inout) :: this
      end function get_rand_i
-     !! arr_rand_i: set size(arr) random numbers in arr(:)
+     !> `arr_rand_i`: Set size(arr) random numbers in arr(:)
      subroutine arr_rand_i(this, arr)
        import random_base_t, real64
        class(random_base_t), intent(inout) :: this

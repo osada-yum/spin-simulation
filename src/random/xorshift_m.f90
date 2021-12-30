@@ -6,7 +6,8 @@ module xorshift_m
   real(real64), parameter :: to_real64 = 1 / (real(huge(1_int32), real64) + 1)
 
   public :: xor96
-  type, extends(random_base_t) :: xor96 ! from [https://ja.wikipedia.org/wiki/Xorshift].
+  !> `xor96`: From [https://ja.wikipedia.org/wiki/Xorshift].
+  type, extends(random_base_t) :: xor96
      private
      integer :: x, y, z
    contains
@@ -17,6 +18,7 @@ module xorshift_m
 
 contains
 
+  !> `set_seed_xor96`: Set seed of xorshift.
   subroutine set_seed_xor96(this, iseed)
     class(xor96), intent(inout) :: this
     integer     , intent(in)    :: iseed
@@ -25,6 +27,7 @@ contains
     this%z = ieor(521288629, iseed)
   end subroutine set_seed_xor96
 
+  !> `get_rand_xor96`: Return random number of xorshift.
   real(real64) function get_rand_xor96(this)
     class(xor96), intent(inout) :: this
     integer                     :: tx, ty, tz
@@ -38,6 +41,7 @@ contains
     return
   end function get_rand_xor96
 
+  !> `random_arr_xor96`: Return random numbers of xorshift by argument `arr`.
   subroutine random_arr_xor96(this, arr)
     class(xor96), intent(inout) :: this
     real(real64), intent(out)   :: arr(:)

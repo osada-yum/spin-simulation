@@ -8,7 +8,8 @@ module builtin_rand_m
   real(real64)  , parameter :: to_real64 = 1 / (real(huge(1_int32), real64) + 1)
 
   public :: builtin_rand_wrapper
-  type, extends(random_base_t) :: builtin_rand_wrapper ! builtin_rand_wrapper for fortran builtin random number generator
+  !> `builtin_rand_wrapper` Wrapper for fortran-builtin-random-number-generator.
+  type, extends(random_base_t) :: builtin_rand_wrapper
      private
    contains
      procedure, pass :: set_seed   => set_seed_wrapper
@@ -18,6 +19,7 @@ module builtin_rand_m
 
 contains
 
+  !> `set_seed_wrapper`: Wrapper for `random_seed`.
   subroutine set_seed_wrapper(this, iseed)
     class(builtin_rand_wrapper), intent(inout) :: this
     integer                    , intent(in)    :: iseed
@@ -35,6 +37,8 @@ contains
     deallocate(seed)
   end subroutine set_seed_wrapper
 
+  !> `get_rand_wrapper`: Wrapper for `random_number`.
+  !> Return one random number.
   real(real64) function get_rand_wrapper(this)
     class(builtin_rand_wrapper), intent(inout) :: this
     real(real64)                               :: rnd
@@ -43,6 +47,8 @@ contains
     return
   end function get_rand_wrapper
 
+  !> `random_arr_wrapper`: Wrapper for `random_number`.
+  !> Return some random numbers by arguments.
   subroutine random_arr_wrapper(this, arr)
     class(builtin_rand_wrapper), intent(inout) :: this
     real(real64)               , intent(out)   :: arr(:)
@@ -50,6 +56,8 @@ contains
     call random_number(arr)
   end subroutine random_arr_wrapper
 
+  !> `lcg`: Private linear congruential generators.
+  !> This is used only by `set_seed_wrapper`.
   subroutine lcg(seed, rnd)
     integer     , intent(inout) :: seed
     real(rkind), intent(out)    :: rnd

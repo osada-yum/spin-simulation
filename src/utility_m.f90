@@ -5,8 +5,8 @@ module utility_m
   real(rkind), parameter :: epsilon = 1e-7_rkind
 contains
 
+  !> `util_linspace`: calculate Internal division point.
   pure function util_linspace(from, to, num) result(arr)
-    !! `util_linspace`: calculate Internal division point.
     real(rkind), intent(in) :: from, to
     integer    , intent(in) :: num
     real(rkind)             :: arr(num)
@@ -16,8 +16,8 @@ contains
     end do
   end function util_linspace
 
+  !> `util_debug_print`: print mesage if compiler flag is -DDEBUG.
   subroutine util_debug_print(message, linum, filename)
-    !! `util_debug_print`: print mesage if compiler flag is -DDEBUG.
     integer, intent(in) :: linum
     character(len=*)    :: message, filename
 #ifdef DEBUG
@@ -26,8 +26,8 @@ contains
 #endif
   end subroutine util_debug_print
 
+  !> `util_warning`: print warning. error stop if -DDEBUG.
   subroutine util_warning(message, linum, filename)
-    !! `util_warning`: print warning. error stop if -DDEBUG.
     integer, intent(in) :: linum
     character(len=*)    :: message, filename
     write(error_unit, '(a, i0)') "warning in "//filename//":", linum
@@ -37,8 +37,8 @@ contains
 #endif
   end subroutine util_warning
 
+  !> `util_error_stop`: print error. error stop.
   subroutine util_error_stop(message, linum, filename)
-    !! `util_error_stop`: print error. error stop.
     integer, intent(in) :: linum
     character(len=*)    :: message, filename
     write(error_unit, '(a, i0)') "error in "//filename//":", linum
