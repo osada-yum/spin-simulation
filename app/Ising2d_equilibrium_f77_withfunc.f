@@ -4,7 +4,7 @@
       implicit real(8) (a-h,o-z)
       parameter(nx=51, ny=50, N=nx*ny, noff=nx, nall=N+2*noff)
       parameter(ilb=-noff+1, iub=ilb+nall-1)
-      parameter(nkbt=50, dkbt_beg=2.0d0, dkbt_end=2.6d0)
+      parameter(nkbt=50, dkbt_beg=2.6d0, dkbt_end=2.0d0)
       parameter(mcs_relx=500000, mcs_smpl=500000)
       dimension Ising(ilb:iub)
       dimension exparr(-8:8)
@@ -74,8 +74,8 @@ c
 c internal division point.
       do i = 1, n
          arr(i) =
-     &        ( (i-1)    *beg
-     &        + (n-1-i+1)*end ) / (n-1)
+     &        ( (n-1-i+1)*beg
+     &        + (i-1)    *end ) / (n-1)
       end do
       end subroutine
 c

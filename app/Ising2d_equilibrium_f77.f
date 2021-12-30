@@ -3,7 +3,7 @@
       implicit real(8) (a-h,o-z)
       parameter(nx=51, ny=50, N=nx*ny, noff=nx, nall=N+2*noff)
       parameter(ilb=-noff+1, irb=ilb+nall)
-      parameter(nkbt=50, dkbt_beg=2.0d0, dkbt_end=2.6d0)
+      parameter(nkbt=50, dkbt_beg=2.6d0, dkbt_end=2.0d0)
       parameter(mcs_relx=500000, mcs_smpl=500000)
       dimension Ising(ilb:irb)
       dimension exparr(-8:8)
@@ -19,8 +19,8 @@
 c initialize dkbts, Ising, energy, dmagne.
       do i = 1, nkbt
          dkbts(i) =
-     &        ( (i-1)       *dkbt_beg
-     &        + (nkbt-1-i+1)*dkbt_end ) / (nkbt-1) ! internal division point.
+     &        ( (nkbt-1-i+1)*dkbt_beg
+     &        + (i-1)       *dkbt_end ) / (nkbt-1) ! internal division point.
       end do
       call random_number(rnd)
       do i = 1, N

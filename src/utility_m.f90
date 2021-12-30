@@ -12,7 +12,7 @@ contains
     real(rkind)             :: arr(num)
     integer                 :: i
     do i = 1, num
-       arr(i) = ( (i-1)*from + (num-1-i+1)*to ) / (num-1)
+       arr(i) = ( (num-1-i+1)*from + (i-1)*to ) / (num-1)
     end do
   end function util_linspace
 
