@@ -24,7 +24,7 @@ contains
   subroutine is_all_element_one(sys)
     type(Ising2d), intent(in) :: sys
     integer                   :: i
-    do i = 1-sys%offset(), sys%particles()+sys%offset()
+    do i = 1, sys%particles()
        if (abs(sys%spin(i)) /= 1) then
           write(error_unit, '(2(es30.15), a)') i, sys%spin(i)
           call util_error_stop("sys%spin(i) /= 1"&
