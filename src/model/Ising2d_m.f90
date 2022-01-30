@@ -78,7 +78,7 @@ contains
        call util_error_stop("res_sp%spin_s is not allocated."&
             , __LINE__, __FILE__)
     end if
-    allocate(res_sp%neighbors_s(res_sp%particles_s, 4))          ! allocate neighboring spins of each spins.
+    allocate(res_sp%neighbors_s(num_neighbors, res_sp%particles_s))          ! allocate neighboring spins of each spins.
     ! skew boundary
     !        1  2  3
     !  9 <-|10 11 12| -> 1
@@ -88,18 +88,18 @@ contains
     !      |10 11 12|
     do i = 1, res_sp%particles_s
        if (i == res_sp%particles_s) then ! right
-          call associate_neighbor_spin(res_sp%neighbors_s(i, 1)%p, res_sp%spin_s(1))
+          call associate_neighbor_spin(res_sp%neighbors_s(1, i)%p, res_sp%spin_s(1))
        else
-          call associate_neighbor_spin(res_sp%neighbors_s(i, 1)%p, res_sp%spin_s(i+1))
+          call associate_neighbor_spin(res_sp%neighbors_s(1, i)%p, res_sp%spin_s(i+1))
        end if
-       call associate_neighbor_spin(res_sp%neighbors_s(i, 2)%p, &
+       call associate_neighbor_spin(res_sp%neighbors_s(2, i)%p, &
             res_sp%spin_s( mod(i-1+res_sp%nx_s, res_sp%particles_s)+1 )) ! top
        if (i == 1) then ! left
-          call associate_neighbor_spin(res_sp%neighbors_s(i, 3)%p, res_sp%spin_s(res_sp%particles_s))
+          call associate_neighbor_spin(res_sp%neighbors_s(3, i)%p, res_sp%spin_s(res_sp%particles_s))
        else
-          call associate_neighbor_spin(res_sp%neighbors_s(i, 3)%p, res_sp%spin_s(i-1))
+          call associate_neighbor_spin(res_sp%neighbors_s(3, i)%p, res_sp%spin_s(i-1))
        end if
-       call associate_neighbor_spin(res_sp%neighbors_s(i, 4)%p, &
+       call associate_neighbor_spin(res_sp%neighbors_s(4, i)%p, &
             res_sp%spin_s( mod(i-1-res_sp%nx_s+res_sp%particles_s, res_sp%particles_s)+1 )) ! bottom
     end do
     ! 遷移確率の配列.
@@ -138,7 +138,7 @@ contains
   pure integer function get_neighbor_spin(this, index, neighbor) result(res_i)
     class(Ising2d), intent(in) :: this
     integer       , intent(in) :: index, neighbor
-    res_i = this%neighbors_s(index, neighbor)%p
+    res_i = this%neighbors_s(neighbor, index)%p
   end function get_neighbor_spin
   !> get_spin: return spin of index. [1, particles_s].
   pure integer(ikind) function get_spin(this,index) result(res_p)
@@ -225,10 +225,10 @@ contains
     integer       , intent(in) :: index
     class(Ising2d), intent(in) :: s
     energy_onespin = 2* s%spin_s(index) *&
-         ( s%neighbors_s(index, 1)%p&
-         + s%neighbors_s(index, 2)%p&
-         + s%neighbors_s(index, 3)%p&
-         + s%neighbors_s(index, 4)%p )
+         ( s%neighbors_s(1, index)%p&
+         + s%neighbors_s(2, index)%p&
+         + s%neighbors_s(3, index)%p&
+         + s%neighbors_s(4, index)%p )
   end function energy_onespin
   !! calc_magne: 磁化の計算, sum()でOK.
   pure real(rkind) function calc_magne(system) result(magne)
@@ -264,8 +264,8 @@ contains
 
        energy_tmp = energy_tmp &
             - system%spin(i) * &
-            ( system%neighbor_spin(i, 1)&
-            + system%neighbor_spin(i, 2) )
+            ( system%neighbors_s(i, 1)%p&
+            + system%neighbors_s(i, 2)%p )
     end do
     magne  = real(magne_tmp, rkind)  / system%particles()
     energy = real(energy_tmp, rkind) / system%particles()
