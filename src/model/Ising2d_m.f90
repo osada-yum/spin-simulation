@@ -22,6 +22,7 @@ module Ising2d_m
      integer(ikind), allocatable  :: spin_s(:)
      real(rkind)                  :: ising_exp_s(-8:8)       ! 更新確率の配列(使うのは5パターン-4,-2,0,+2,+4).
      procedure(updater), pointer  :: updater_s => null()
+     integer(ikind)               :: magne_s, energy_s
    contains
      ! getter
      procedure,pass :: x                 => get_x
@@ -31,6 +32,8 @@ module Ising2d_m
      procedure,pass :: beta              => get_beta                         ! 逆温度.
      procedure,pass :: neighbor_spin     => get_neighbor_spin                ! 周りの格子点のindexの配列を返す.
      procedure,pass :: spin              => get_spin
+     procedure,pass :: magne             => get_magne
+     procedure,pass :: energy            => get_energy
      ! setter
      procedure,pass :: set_kbt           => set_kbt_s
      procedure,pass :: set_beta          => set_beta_s
@@ -57,6 +60,10 @@ module Ising2d_m
        class(random_base_t), intent(inout) :: rng
      end subroutine updater
   end interface
+
+  interface calc_magne_and_energy
+     module procedure calc_magne_and_energy_r, calc_magne_and_energy_i
+  end interface calc_magne_and_energy
 
 contains
   ! デフォルトコンストラクタ.
@@ -167,6 +174,7 @@ contains
   subroutine set_order_spin_ising(this)
     class(Ising2d), intent(inout) :: this
     this%spin_s(:) = 1
+    call calc_magne_and_energy(this, this%magne_s, this%energy_s)
   end subroutine set_order_spin_ising
   !! set_random_spin_ising: ランダムにスピンを配置する.
   subroutine set_random_spin_ising(this, rand_gen)
@@ -182,6 +190,7 @@ contains
           this%spin_s(i) = -1
        end if
     end do
+    call calc_magne_and_energy(this, this%magne_s, this%energy_s)
   end subroutine set_random_spin_ising
   ! updater
   !! set_updater_ising: set `system%updater_s` by argument `method`.
@@ -216,6 +225,8 @@ contains
           !! Metropolis法の遷移確率に従ってスピンを反転させる.
           if ( rnd(i) < system%ising_exp_s(energy_diff) ) then
              system%spin_s(i) = -system%spin_s(i)
+             system%magne_s   = system%magne_s  + 2*system%spin_s(i) ! -2(+1 -> -1), +2(-1 -> +1).
+             system%energy_s  = system%energy_s + energy_diff
           end if
        end do
     end do
@@ -230,6 +241,16 @@ contains
          + s%neighbors_s(3, index)%p&
          + s%neighbors_s(4, index)%p )
   end function energy_onespin
+  !> get_magne: return magnetism per spins.
+  pure real(rkind) function get_magne(system) result(magne)
+    class(Ising2d), intent(in) :: system
+    magne = real(system%magne_s, rkind) / system%particles()
+  end function get_magne
+  !> get_energy: return energy per spins.
+  pure real(rkind) function get_energy(system) result(energy)
+    class(Ising2d), intent(in) :: system
+    energy = real(system%energy_s, rkind) / system%particles()
+  end function get_energy
   !! calc_magne: 磁化の計算, sum()でOK.
   pure real(rkind) function calc_magne(system) result(magne)
     type(Ising2d), intent(in) :: system
@@ -249,26 +270,33 @@ contains
     end do
     energy = real(energy_tmp, rkind) / system%particles()
   end function calc_energy
-  !! calc_magne_and_energy: 両方計算する, 1回のループで両方計算する.
-  pure subroutine calc_magne_and_energy(system, magne, energy)
+  !> calc_magne_and_energy: Calculate magne and energy in one do loop.
+  !> calc_magne_and_energy_i: take integer     rguments `magne` and `energy`.
+  pure subroutine calc_magne_and_energy_i(system, magne, energy)
     type(Ising2d), intent(in)  :: system
-    real(rkind)  , intent(out) :: magne
-    real(rkind)  , intent(out) :: energy
-    integer(ikind)             :: magne_tmp
-    real(rkind)                :: energy_tmp
+    integer      , intent(out) :: magne, energy
+    integer                    :: magne_tmp, energy_tmp
     integer                    :: i
-    magne_tmp  = 0.0_rkind
-    energy_tmp = 0.0_rkind
+    magne_tmp  = 0
+    energy_tmp = 0
     do i = 1, system%particles()
        magne_tmp  = magne_tmp + system%spin(i)
-
        energy_tmp = energy_tmp &
             - system%spin(i) * &
             ( system%neighbors_s(i, 1)%p&
             + system%neighbors_s(i, 2)%p )
     end do
-    magne  = real(magne_tmp, rkind)  / system%particles()
+    magne  = magne_tmp
+    energy = energy_tmp
+  end subroutine calc_magne_and_energy_i
+  !> calc_magne_and_energy_r: take real(rkind) arguments `magne` and `energy`.
+  pure subroutine calc_magne_and_energy_r(system, magne, energy)
+    type(Ising2d), intent(in)  :: system
+    real(rkind)  , intent(out) :: magne, energy
+    integer(ikind)             :: magne_tmp, energy_tmp
+    integer                    :: i
+    call calc_magne_and_energy_i(system, magne_tmp, energy_tmp)
+    magne  = real(magne_tmp , rkind) / system%particles()
     energy = real(energy_tmp, rkind) / system%particles()
-    return
-  end subroutine calc_magne_and_energy
+  end subroutine calc_magne_and_energy_r
 end module Ising2d_m
