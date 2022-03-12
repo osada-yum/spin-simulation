@@ -1,10 +1,8 @@
-set(TEST_2D-Ising_norishiro test_Ising2d_norishiro.out)
 set(TEST_2D-Ising_element test_Ising2d_element.out)
 
-add_executable(${TEST_2D-Ising_norishiro} test_Ising2d_norishiro.f90)
 add_executable(${TEST_2D-Ising_element} test_Ising2d_element.f90)
 
-foreach(TEST IN ITEMS ${TEST_2D-Ising_norishiro} ${TEST_2D-Ising_element})
+foreach(TEST IN ITEMS ${TEST_2D-Ising_element})
 target_include_directories(${TEST}
   PRIVATE
   ${CMAKE_BINARY_DIR}/src
