@@ -38,10 +38,15 @@ c update norishiro.
          Ising(i-noff) = Ising(i+N-noff)
          Ising(i+N)    = Ising(i)
       end do
+c calculate initial magnetization and energy.
+      magne   = 0
+      ienergy = 0
+      do i = 1, N
+         magne   = magne   + Ising(i)
+         ienergy = ienergy - Ising(i)*(Ising(i+1)+Ising(i+nx))
+      end do
 c update Ising in each temperatures.
       exparr = 1.0d0
-      energy = 0.0d0
-      magne  = 0.0d0
       call bm%stamp("start update")
       do k = 1, nkbt
          dbeta = 1/dkbts(k)
@@ -58,7 +63,11 @@ c           update Ising with checkerboard pattern.
                do i = is, N, 2
                   ide = 2*Ising(i)*
      &                 (Ising(i+1)+Ising(i-1)+Ising(i+nx)+Ising(i-nx))
-                  if (rnd(i) .lt. exparr(ide)) Ising(i) = -Ising(i)
+                  if (rnd(i) .lt. exparr(ide)) then
+                     Ising(i) = -Ising(i)
+                     magne   = magne   + 2*Ising(i)
+                     ienergy = ienergy + ide
+                  end if
                end do
 c              update norishiro.
                do i = 1, noff
@@ -77,19 +86,17 @@ c           update Ising with checkerboard pattern.
                do i = is, N, 2
                   ide = 2*Ising(i)*
      &                 (Ising(i+1)+Ising(i-1)+Ising(i+nx)+Ising(i-nx))
-                  if (rnd(i) .lt. exparr(ide)) Ising(i) = -Ising(i)
+                  if (rnd(i) .lt. exparr(ide)) then
+                     Ising(i) = -Ising(i)
+                     magne   = magne   + 2*Ising(i)
+                     ienergy = ienergy + ide
+                  end if
                end do
 c              update norishiro.
                do i = 1, noff
                   Ising(i-noff) = Ising(i+N-noff)
                   Ising(i+N)    = Ising(i)
                end do
-            end do
-            magne   = 0
-            ienergy = 0
-            do i = 1, N
-               magne   = magne   + Ising(i)
-               ienergy = ienergy - Ising(i)*(Ising(i+1)+Ising(i+nx))
             end do
             dm = dm + abs(1.0d0*magne / N)
             e  = e  +     1.0d0*ienergy / N
