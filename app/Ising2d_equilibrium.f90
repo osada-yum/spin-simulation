@@ -14,7 +14,7 @@ program Ising2d_equilibrium
   type(RAND_GEN_TYPE)             :: gen
   real(rkind), allocatable        :: temperature(:)
   real(rkind), parameter          :: temperature_begin = 2.6_rkind, temperature_end = 2.0_rkind
-  integer    , parameter          :: num_temperature = 50
+  integer    , parameter          :: num_temperature = 5
   real(rkind), allocatable        :: magne(:), energy(:)
   integer, parameter              :: relx_mcs = 500000, sample_mcs = 500000
   integer                         :: i, j
@@ -33,7 +33,7 @@ program Ising2d_equilibrium
   write(output_unit, '(a,i0)'     ) "# N = ", system%particles()
   write(output_unit, '(2(a,i0))'  ) "# MCS(relaxation) = ", relx_mcs, " MCS(sampling) = ", sample_mcs
   write(error_unit , '(3(a, i0))' ) "nx", system%x(), " ny", system%y()
-  write(error_unit , '(a, f30.18)') "method: METROPOLIS"
+  write(error_unit , '(a, f30.18)') "method: METROPOLIS, ptr, member (magne_s, energy_s)"
 
   !! 初期配置(ランダム).
   call system%set_random_spin(gen)
@@ -50,12 +50,8 @@ program Ising2d_equilibrium
      end do
      do i = 1, sample_mcs
         call system%update_one_mcs(gen)
-        calc_order_parameters: block
-          real(rkind) :: m_tmp, e_tmp
-          call calc_magne_and_energy(system, m_tmp, e_tmp)
-          magne(j)  = magne(j)  + abs(m_tmp)
-          energy(j) = energy(j) + e_tmp
-        end block calc_order_parameters
+        magne(j)  = magne(j)  + abs(system%magne())
+        energy(j) = energy(j) + system%energy()
      end do
   end do
   call bm%stamp("end update")
